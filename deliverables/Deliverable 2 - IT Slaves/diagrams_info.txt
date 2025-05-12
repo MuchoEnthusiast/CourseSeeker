@@ -1,0 +1,9 @@
+As requested from the requirements of the Deliverable-2 we have implemented diagrams for logic view, development view and process view.
+
+in the logic view we have an user-case diagram (for higher-level logical relations) and a domain-class diagram (for lower-lever logical relations).
+
+in the development view we have a component diagram to represent the more technical interactions between the components, shaping briefly the mechanics of our system; and a package diagram to represent the structure of our system.
+
+in the process view we have two sequence diagrams for representing the actions and internal processes, one when the user type is the student, and the other one when the user type is the teacher.
+
+
