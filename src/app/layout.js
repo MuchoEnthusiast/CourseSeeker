@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "bootstrap/dist/css/bootstrap.min.css"
+import Image from 'next/image';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,6 +22,32 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <header>
+          <div className="header">
+            <a href="index.html" className="logo">
+              <Image
+                src="/courseseeker_logo.svg"
+                width={500}
+                height={500}
+                alt="Courseseeker logo"
+              />
+            </a>
+            <a href="index.html">Home</a>
+            <a href="coursers.html">Courses</a>
+            <div className="find-course">
+              <input type="text" className="form-control"></input>
+            </div>
+            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              Dropdown button
+            </button>
+            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+              <li><a className="dropdown-item" href="#">Action</a></li>
+              <li><a className="dropdown-item" href="#">Another action</a></li>
+              <li><a className="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+          </div>
+        </header>
         {children}
       </body>
     </html>
