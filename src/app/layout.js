@@ -3,6 +3,8 @@ import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css"
 import Image from 'next/image';
 
+import { Button, Col, Container, Row, Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from "react-bootstrap";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,33 +24,41 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <header>
-          <div className="header">
-            <a href="index.html" className="logo">
-              <Image
-                src="/courseseeker_logo.svg"
-                width={500}
-                height={500}
-                alt="Courseseeker logo"
-              />
-            </a>
-            <a href="index.html">Home</a>
-            <a href="coursers.html">Courses</a>
-            <div className="find-course">
-              <input type="text" className="form-control"></input>
+        <div className="wrapper">
+          <header>
+            <div className="header">
+              <a href="index.html" className="logo">
+                <Image
+                  src="/courseseeker_logo.svg"
+                  width={500}
+                  height={500}
+                  alt="Courseseeker logo"
+                />
+              </a>
+              <a href="index.html">Home</a>
+              <a href="coursers.html">Courses</a>
+              <div className="find-course">
+                <input type="text" className="form-control" placeholder="Find course..."></input>
+              </div>
+              <Dropdown className="ms-auto">
+                <DropdownToggle variant="secondary" id="dropdown-basic">
+                  Name Surname
+                </DropdownToggle>
+                <DropdownMenu variant="dark">
+                  <DropdownItem href="#/action-1">Profile</DropdownItem>
+                  <DropdownItem href="#/action-2">Settings</DropdownItem>
+                  <DropdownItem href="#/action-3">Exit</DropdownItem>
+                </DropdownMenu>
+              </Dropdown>
             </div>
-            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown button
-            </button>
-            <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a className="dropdown-item" href="#">Action</a></li>
-              <li><a className="dropdown-item" href="#">Another action</a></li>
-              <li><a className="dropdown-item" href="#">Something else here</a></li>
-            </ul>
+          </header>
+          <div className="main">
+            {children}
           </div>
-        </header>
-        {children}
+          <footer>
+            le footer trademark
+          </footer>
+        </div>
       </body>
     </html>
   );

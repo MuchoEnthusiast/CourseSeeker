@@ -12,6 +12,7 @@
 
 html,
 body {
+  height: 100%;
   max-width: 100vw;
   overflow-x: hidden;
 }
@@ -46,52 +47,69 @@ a {
 /* @import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css'); */
 
 html {
-    font-family: Roboto, sans-serif;
+  font-family: Roboto, sans-serif !important;
 }
 
 
-body { 
-    margin:0;
+body {
+  margin: 0;
 }
 
 header {
-    background-color: blueviolet;
+  background-color: blueviolet;
 
 }
 
 .header {
-    display: flex;
-    align-items: center;
-    padding: 15px 5px;
-    margin: 0 15px;
+  display: flex;
+  align-items: center;
+  padding: 15px 5px;
+  margin: 0 15px;
 }
+
 /* 
 .header .logo {
 
 } */
 
 .header .logo img {
-    width: 15em;
-    height: auto;
+  width: 15em;
+  height: auto;
 }
 
 .header .logo {
-    /* padding: 0 !important; */
-    padding-right: 15px;
-    padding-left: 0px;
+  /* padding: 0 !important; */
+  padding-right: 15px;
+  padding-left: 0px;
 }
 
 .header a {
-    padding: 0 20px;
-    text-decoration: none;
-    color: rgb(255, 255, 255);
+  padding: 0 20px;
+  text-decoration: none;
+  color: rgb(255, 255, 255);
 }
 
 .header .find-course {
-    padding: 0 20px;
-    max-width: 500px;
+  padding: 0 20px;
+  max-width: 500px;
 }
 
 .header .dropdown-toggle {
-    margin-left: auto;
+  margin-left: auto;
+}
+
+.wrapper {
+  min-height: 100%;
+
+  /* max-width: auto; */
+  display: flex;
+  flex-direction: column;
+
+}
+
+.main {
+  flex: 1 1 auto;
+  padding: 0 150px;
+  margin-top: 30px;
+  justify-content: center;
 }
