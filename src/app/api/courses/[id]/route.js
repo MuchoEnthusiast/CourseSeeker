@@ -1,16 +1,71 @@
-import { query } from '../../../lib/db';  // импортируем функции для работы с базой данных
-
-export default async function handler(req, res) {
-  const { id } = req.query;
-
-  try {
-    const result = await query('SELECT * FROM courses WHERE id = ?', [id]);
-    if (result.length > 0) {
-      res.status(200).json(result[0]);  // возвращаем первый найденный курс
-    } else {
-      res.status(404).json({ message: 'Course not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Database error' });
+const courses = {
+  "1": { 
+    id: "1", 
+    name: "React Basics",
+    topics: [
+      {
+        title: "Topic 1",
+        description: "Test description 1",
+        attachments: [
+          {
+            name: "Attachment1",
+            id: "1"
+          }
+        ]
+      },
+      {
+        title: "Topic 2",
+        description: "Test description 2",
+        attachments: [
+          {
+            name: "Attachment1",
+            id: "2"
+          }
+        ]
+      }
+    ]
+  },
+  "2": { 
+    id: "2", 
+    name: "Nextjs Advanced",
+    topics: [
+      {
+        title: "Topic 1",
+        description: "Test description 1",
+        attachments: [
+          {
+            name: "Attachment1",
+            id: "1"
+          }
+        ]
+      },
+      {
+        title: "Topic 2",
+        description: "Test description 2",
+        attachments: [
+          {
+            name: "Attachment1",
+            id: "2"
+          }
+        ]
+      }
+    ]
   }
+}
+
+export async function GET(request, { params }) {
+  const { id } = await params
+  const course = courses[id]
+
+  if (!course) {
+    return new Response(JSON.stringify({ error: "Course not found" }), {
+      status: 404,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
+  return new Response(JSON.stringify(course), {
+    status: 200,
+    headers: { "Content-Type": "application/json" },
+  });
 }
