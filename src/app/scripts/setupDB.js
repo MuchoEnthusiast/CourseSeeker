@@ -1,7 +1,18 @@
 import { connectToDatabase } from "../lib/db.js";
+import mysql from 'mysql2/promise';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// DOTENV CONFIG HERE
+dotenv.config({ path: path.resolve(__dirname, '../../../.env.local') });
+
 
 const setupDatabase = async () => {
-  const dbName = "db";
+  const dbName = process.env.DB_NAME;
   const serverConnection = await connectToDatabase(); // No db name, server-level connection
 
   try {

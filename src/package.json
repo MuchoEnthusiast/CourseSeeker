@@ -2,6 +2,7 @@
   "name": "courseseeker",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "node app/scripts/setupDB.js && next dev",
     "build": "next build",
@@ -10,6 +11,7 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.6",
+    "dotenv": "^16.5.0",
     "geist": "^1.4.2",
     "mysql2": "^3.14.1",
     "next": "15.3.2",
