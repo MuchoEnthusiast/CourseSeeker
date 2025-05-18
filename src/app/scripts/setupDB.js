@@ -44,13 +44,11 @@ const setupDatabase = async () => {
 
       CREATE TABLE IF NOT EXISTS course_browser (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        user_id INT NOT NULL,
         course_id INT NOT NULL,
         course_name VARCHAR(255) NOT NULL,
         description TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE,
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        FOREIGN KEY (course_id) REFERENCES courses(id) ON DELETE CASCADE
       );
     `);
     console.log("Tables created.");
