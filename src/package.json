@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node app/scripts/setupDB.js && next dev",
+    "dev": "node app/lib/setupDB.cjs && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -13,11 +13,13 @@
     "bootstrap": "^5.3.6",
     "dotenv": "^16.5.0",
     "geist": "^1.4.2",
+    "mongoose": "^8.15.0",
     "mysql2": "^3.14.1",
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.10",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
