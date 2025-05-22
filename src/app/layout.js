@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css"
+import 'bootstrap-icons/font/bootstrap-icons.css'
 import Image from 'next/image';
 
 import { Button, Col, Container, Row, Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from "react-bootstrap";

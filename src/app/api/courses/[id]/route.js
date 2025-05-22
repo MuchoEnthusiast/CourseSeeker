@@ -10,6 +10,18 @@ const courses = {
           {
             name: "Attachment1",
             id: "1"
+          },
+          {
+            name: "Attachment2",
+            id: "2"
+          },
+          {
+            name: "Attachment3",
+            id: "3"
+          },
+          {
+            name: "Attachment4",
+            id: "4"
           }
         ]
       },
@@ -19,11 +31,34 @@ const courses = {
         attachments: [
           {
             name: "Attachment1",
-            id: "2"
+            id: "5"
           }
         ]
       }
-    ]
+    ],
+    participants: [
+      {
+        username: "username",
+        role: "Student",
+        name: "Name",
+        surname: "Surname",
+        lastVisited: 0,
+      }
+    ],
+    chat: {
+      messages: [
+        {
+          username: "User1",
+          message: "Ciao tutti ! ! !",
+          timestamp: 0
+        },
+        {
+          username: "User2",
+          message: "Ciao tutti ! ! !",
+          timestamp: 0
+        }
+      ]
+    }
   },
   "2": { 
     id: "2", 
@@ -35,7 +70,7 @@ const courses = {
         attachments: [
           {
             name: "Attachment1",
-            id: "1"
+            id: "6"
           }
         ]
       },
@@ -45,11 +80,34 @@ const courses = {
         attachments: [
           {
             name: "Attachment1",
-            id: "2"
+            id: "7"
           }
         ]
       }
-    ]
+    ],
+    participants: [
+      {
+        username: "username",
+        role: "Student",
+        name: "Name",
+        surname: "Surname",
+        lastVisited: 0,
+      }
+    ],
+    chat: {
+      messages: [
+        {
+          username: "User1",
+          message: "Ciao tutti ! ! !",
+          timestamp: 0
+        },
+        {
+          username: "User2",
+          message: "Ciao tutti ! ! !",
+          timestamp: 0
+        }
+      ]
+    }
   }
 }
 

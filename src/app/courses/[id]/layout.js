@@ -1,3 +1,4 @@
+import BackButton from "@/components/ui/BackButton";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -16,8 +17,12 @@ export default async function Layout({ children, params }) {
 
   return (
     <div>
-      <div className="container py-4 text-center">
-        <h1 className="fw-bold">{course.name}</h1>
+      <div className="container position-relative d-flex align-items-center">
+        <div className="me-auto"><BackButton /></div>
+
+        <div className="position-absolute top-50 start-50 translate-middle">
+          <h1 className="fw-bold">{course.name}</h1>
+        </div>
       </div>
 
       <div className="container mt-3">
@@ -30,7 +35,7 @@ export default async function Layout({ children, params }) {
               <Link className="btn border-0 text-black bg-transparent" href={`/courses/${id}/chat`}>Chat</Link>
             </nav>
           </div>
-          <div className="card-body d-flex">
+          <div className="card-body">
             <main className="p-4">{children}</main>
           </div>
         </div>
