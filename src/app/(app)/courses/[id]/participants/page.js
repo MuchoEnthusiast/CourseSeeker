@@ -1,15 +1,15 @@
+import { getCourses } from "@/app/lib/data"
+import { getUserFromTokenCookie } from "@/app/lib/auth"
+
 export default async function Participants({ params }) {
+  const user = await getUserFromTokenCookie()
+  if(!user) return <>Not logged in</>
+
   const { id } = await params;
-
-  const res = await fetch(`http://localhost:3000/api/courses/${id}`, {
-    cache: "no-store",
-  });
-
-  if(!res.ok) {
+  const course = getCourses(id)
+  if(!course) {
     notFound()
   }
-
-  const course = await res.json()
 
   return (
     <div>

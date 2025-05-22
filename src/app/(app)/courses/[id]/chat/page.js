@@ -43,7 +43,7 @@ export default function Chat() {
       </div>
       <div className="input-group">
         <input type="text" className="form-control" value={input} onChange={e => setInput(e.target.value)} placeholder="Type a message..." />
-        <button className="btn btn-dark" onClick={handleSend}><i class="bi bi-send"></i></button>
+        <button className="btn btn-dark" onClick={handleSend}><i className="bi bi-send"></i></button>
       </div>
     </div>
   )

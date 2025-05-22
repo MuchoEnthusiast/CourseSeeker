@@ -11,11 +11,12 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.6",
+    "bootstrap-icons": "^1.13.1",
     "dotenv": "^16.5.0",
     "geist": "^1.4.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.0",
     "mysql2": "^3.14.1",
-    "bootstrap-icons": "^1.13.1",
     "next": "15.3.2",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.10",

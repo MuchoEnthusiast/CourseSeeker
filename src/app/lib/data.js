@@ -111,19 +111,6 @@ const courses = {
   }
 }
 
-export async function GET(request, { params }) {
-  const { id } = await params
-  const course = courses[id]
-
-  if (!course) {
-    return new Response(JSON.stringify({ error: "Course not found" }), {
-      status: 404,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
-  return new Response(JSON.stringify(course), {
-    status: 200,
-    headers: { "Content-Type": "application/json" },
-  });
+export function getCourses(id) {
+    return courses[id]
 }
