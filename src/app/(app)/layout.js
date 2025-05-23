@@ -49,7 +49,7 @@ export default async function RootLayout({ children }) {
               <Link href="/" passHref>
                 Home
               </Link>
-              <Link href="/(app)/courses/" passHref>
+              <Link href="/courses/" passHref>
                 Courses</Link>
               <div className="find-course">
                 <input type="text" className="form-control" placeholder="Find course..."></input>
