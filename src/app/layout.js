@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -27,16 +28,19 @@ export default function RootLayout({ children }) {
         <div className="wrapper">
           <header>
             <div className="header">
-              <a href="index.html" className="logo">
+              <Link href="/" passHref className="logo">
                 <Image
                   src="/courseseeker_logo.svg"
                   width={500}
                   height={500}
                   alt="Courseseeker logo"
                 />
-              </a>
-              <a href="index.html">Home</a>
-              <a href="coursers.html">Courses</a>
+              </Link>
+              <Link href="/" passHref>
+                Home
+              </Link>
+              <Link href="/courses/browse" passHref>
+                Courses</Link>
               <div className="find-course">
                 <input type="text" className="form-control" placeholder="Find course..."></input>
               </div>
