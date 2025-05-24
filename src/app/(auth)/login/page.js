@@ -33,7 +33,7 @@ import './login.css'
 
 export default function Login() {
   const router = useRouter()
-  const [username, setUsername] = useState('')
+  const [email, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
@@ -42,7 +42,7 @@ export default function Login() {
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ email, password })
     })
 
     if (res.ok) {
@@ -66,8 +66,8 @@ export default function Login() {
       <div className="login-form">
         <input
           type="text"
-          placeholder="Username"
-          value={username}
+          placeholder="Email"
+          value={email}
           onChange={e => setUsername(e.target.value)}
           className="login-input"
         />

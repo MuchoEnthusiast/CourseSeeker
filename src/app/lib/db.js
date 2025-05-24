@@ -1,3 +1,29 @@
+import sqlite3 from 'sqlite3'
+const db = new sqlite3.Database('./database.db')
+
+export const query = (sql, params = []) => {
+  return new Promise((resolve, reject) => {
+    db.all(sql, params, (err, rows) => {
+      if (err) reject(err)
+      else resolve(rows)
+    })
+  })
+}
+
+export const run = (sql, params = []) => {
+  return new Promise((resolve, reject) => {
+    db.run(sql, params, function (err) {
+      if (err) reject(err)
+      else resolve(this)
+    })
+  })
+}
+
+
+
+
+
+
 // import mysql from 'mysql2/promise';
 // import dotenv from 'dotenv';
 // import path from 'path';
@@ -27,32 +53,32 @@
 // }
 
 
-const sqlite3 = require('sqlite3').verbose();
+// const sqlite3 = require('sqlite3').verbose();
 
-const db = new sqlite3.Database('./database.db');
+// const db = new sqlite3.Database('./database.db');
 
-const query = (sql, params = []) => {
-  return new Promise((resolve, reject) => {
-    db.all(sql, params, (err, rows) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(rows);
-      }
-    });
-  });
-};
+// const query = (sql, params = []) => {
+//   return new Promise((resolve, reject) => {
+//     db.all(sql, params, (err, rows) => {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         resolve(rows);
+//       }
+//     });
+//   });
+// };
 
-const run = (sql, params = []) => {
-  return new Promise((resolve, reject) => {
-    db.run(sql, params, function (err) {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(this);
-      }
-    });
-  });
-};
+// const run = (sql, params = []) => {
+//   return new Promise((resolve, reject) => {
+//     db.run(sql, params, function (err) {
+//       if (err) {
+//         reject(err);
+//       } else {
+//         resolve(this);
+//       }
+//     });
+//   });
+// };
 
-module.exports = { query, run };
+// module.exports = { query, run };

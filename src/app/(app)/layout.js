@@ -26,7 +26,7 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   const user = await getUserFromTokenCookie()
-  if(!user) {
+  if (!user) {
     redirect('/login')
     return <>Not logged in</>
   }
@@ -34,7 +34,7 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        
+
         <div className="wrapper">
           <header>
             <div className="header">
@@ -54,9 +54,13 @@ export default async function RootLayout({ children }) {
               <div className="find-course">
                 <input type="text" className="form-control" placeholder="Find course..."></input>
               </div>
+              {user.role === 'admin' && (
+                <Link href="/admin" className="ms-3">Admin</Link>
+              )}
+
               <Dropdown className="ms-auto">
                 <DropdownToggle variant="secondary" id="dropdown-basic">
-                  Name Surname
+                  {user.name}
                 </DropdownToggle>
                 <DropdownMenu variant="dark">
                   <DropdownItem href="#/action-1">Profile</DropdownItem>
@@ -64,6 +68,7 @@ export default async function RootLayout({ children }) {
                   <DropdownItem href="/logout">Exit</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
+
             </div>
           </header>
           <div className="main">
