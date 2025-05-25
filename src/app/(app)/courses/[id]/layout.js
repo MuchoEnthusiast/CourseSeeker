@@ -1,6 +1,5 @@
 import BackButton from "@/components/ui/BackButton";
 import Link from "next/link";
-import * as React from "react";
 import { notFound } from "next/navigation";
 import { getCourse, isUserEnrolled, updateLastVisited } from "@/lib/data"
 import { getUserFromTokenCookie } from "@/lib/auth"
@@ -9,10 +8,8 @@ import UnenrollButton from "@/components/ui/UnenrollButton";
 import DeleteCourseButton from "@/components/ui/DeleteCourseButton";
 
 export default async function Layout({ children, params }) {
-    const user = getUserFromTokenCookie(cookies());
-    if (!user) {
-      redirect('/login')
-    }
+  const user = await getUserFromTokenCookie()
+  if(!user) return <>Not logged in</>
 
   const { id } = await params;
   const course = await getCourse(id)

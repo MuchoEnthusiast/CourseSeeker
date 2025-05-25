@@ -4,9 +4,6 @@ import "@/app/globals.css";
 import "bootstrap/dist/css/bootstrap.min.css"
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import Image from 'next/image';
-import { cookies } from 'next/headers';
-import { getUserFromTokenCookie } from '@/app/lib/auth';
-import Link from "next/link";
 import { getUserFromTokenCookie } from "../../lib/auth";
 import { redirect } from 'next/navigation'
 
@@ -29,8 +26,11 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const cookieStore = cookies(); 
-  const user = getUserFromTokenCookie(cookieStore);
+  const user = await getUserFromTokenCookie()
+  if(!user) {
+    redirect('/login')
+    return <>Not logged in</>
+  }
 
   return (
     <html lang="en">
