@@ -1,8 +1,11 @@
-import { notFound } from "next/navigation";
-import { getUserFromTokenCookie } from "@/app/lib/auth";
-import { getCourseParticipants } from "@/app/lib/courses";
-import { cookies } from 'next/headers';
-import { redirect } from "next/navigation"; 
+import { getCourse } from "@/lib/data"
+import { getUserFromTokenCookie } from "@/lib/auth"
+
+function capitalize(str) {
+  if (!str) return ''
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
+}
+
 
 export default async function Participants({ params }) {
   const user = getUserFromTokenCookie(cookies());
@@ -10,11 +13,10 @@ export default async function Participants({ params }) {
     redirect('/login')
   }
 
-  const { id } = params;
-  const participants = await getCourseParticipants(id);
-
-  if (!participants || participants.length === 0) {
-    return <p className="text-center mt-4">No participants found for this course.</p>;
+  const { id } = await params;
+  const course = await getCourse(id)
+  if(!course) {
+    notFound()
   }
 
   return (
@@ -28,15 +30,15 @@ export default async function Participants({ params }) {
           </tr>
         </thead>
         <tbody>
-          {participants.map((user, idx) => (
+          {course.users.map((user, idx) => (
             <tr key={idx}>
               <td>
                 <div className="d-flex align-items-center">
                   <span>{user.username}</span>
                 </div>
               </td>
-              <td>{user.role}</td>
-              <td>{new Date(user.last_visited).toLocaleString()}</td>
+              <td>{capitalize(user.role)}</td>
+              <td>{new Date(user.lastVisited).toLocaleString()}</td>
             </tr>
           ))}
         </tbody>

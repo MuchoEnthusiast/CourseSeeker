@@ -16,7 +16,7 @@ export default function Login() {
 
   return (
     <div>
-      <h1>Logout Page</h1>
+      Logout
     </div>
   );
 }

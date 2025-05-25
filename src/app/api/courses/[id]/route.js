@@ -1,34 +1,34 @@
-import { NextResponse } from 'next/server';
-import sqlite3 from 'sqlite3';
+import { getUserFromTokenCookie } from "@/lib/auth"
+import { getDB } from "@/lib/db"
 
-function getDb() {
-    return new sqlite3.Database('./database.db');
+export async function POST(req) {
+  const user = await getUserFromTokenCookie()
+  if(!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
+  if(user.role !== "teacher") return NextResponse.json({ error: 'You must have role teacher' }, { status: 401 })
+
+  const { name } = await req.json()
+  if (!name) return new Response('Missing name', { status: 400 })
+
+  const db = await getDB()
+  try {
+    const result = await db.run('INSERT INTO courses (name, teacher) VALUES (?, ?)', [name, user.username])
+    await db.run('INSERT INTO user_course (username, courseId) VALUES (?, ?)', [user.username, result.lastID])
+    return Response.json({ id: result.lastID }, { status: 201 })
+  } catch(err) {
+    return Response.json({ status: "name_used" }, { status: 406 })
+  }
 }
 
-function getSingleRow(db, query, params = []) {
-    return new Promise((resolve, reject) => {
-        db.get(query, params, (err, row) => {
-            if (err) reject(err);
-            else resolve(row);
-        });
-    });
-}
+export async function DELETE(_, { params }) {
+  const user = await getUserFromTokenCookie()
+  if(!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
+  if(user.role !== "teacher") return NextResponse.json({ error: 'You must have role teacher' }, { status: 401 })
 
-export async function GET(_, { params }) {
-    const db = getDb();
-    try {
-        const id = Number(params.id);
-        const course = await getSingleRow(db, 'SELECT * FROM courses WHERE id = ?', [id]);
+  const db = await getDB()
+  const courseId = parseInt((await params).id)
 
-        // const course = await getSingleRow(db, 'SELECT * FROM courses WHERE id = ?', [params.id]);
-        if (!course) {
-            return NextResponse.json({ error: 'Course not found' }, { status: 404 });
-        }
-        return NextResponse.json(course);
-    } catch (err) {
-        console.error(err);
-        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
-    } finally {
-        db.close();
-    }
+  const result = await db.run('DELETE FROM courses WHERE id = ?', [courseId])
+
+  if (result.changes === 0) return new Response('Not found', { status: 404 })
+  return new Response('Course deleted')
 }

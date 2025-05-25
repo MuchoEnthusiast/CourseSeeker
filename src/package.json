@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node app/lib/setupDB.cjs && next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -13,6 +13,7 @@
     "bcrypt": "^6.0.0",
     "bootstrap": "^5.3.6",
     "bootstrap-icons": "^1.13.1",
+    "cookie": "^1.0.2",
     "dotenv": "^16.5.0",
     "geist": "^1.4.2",
     "jose": "^6.0.11",
@@ -23,7 +24,9 @@
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.0.0",
-    "sqlite3": "^5.1.7"
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7",
+    "ws": "^8.18.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

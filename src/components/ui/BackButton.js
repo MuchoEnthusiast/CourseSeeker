@@ -8,7 +8,7 @@ export default function BackButton() {
   return (
     <button
       className="btn btn-link text-decoration-none p-3 p-0"
-      onClick={() => router.back()}
+      onClick={() => router.push("/courses")}
     >
       <i className="bi bi-chevron-left fs-3"></i>
     </button>
