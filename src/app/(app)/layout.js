@@ -4,7 +4,8 @@ import "@/app/globals.css";
 import "bootstrap/dist/css/bootstrap.min.css"
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import Image from 'next/image';
-import { getUserFromTokenCookie } from "../lib/auth";
+import { cookies } from 'next/headers';
+import { getUserFromTokenCookie } from '@/app/lib/auth';
 import { redirect } from 'next/navigation'
 
 import { Button, Col, Container, Row, Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from "react-bootstrap";
@@ -25,10 +26,8 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const user = await getUserFromTokenCookie()
-  if (!user) {
-    redirect('/login')
-  }
+  const cookieStore = cookies(); // ✅
+  const user = getUserFromTokenCookie(cookieStore); //
 
   return (
     <html lang="en">

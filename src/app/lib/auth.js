@@ -17,11 +17,17 @@ export function getUserFromToken(token) {
 }
 
 //You have to await this function
-export async function getUserFromTokenCookie() {
-    const user = getUserFromToken((await cookies()).get('session_token')?.value)
-    console.log(user)
-    return user
+// export async function getUserFromTokenCookie() {
+//     const user = getUserFromToken((await cookies()).get('session_token')?.value)
+//     console.log(user)
+//     return user
+// }
+
+export function getUserFromTokenCookie(cookieStore) {
+  const token = cookieStore.get?.('session_token')?.value;
+  return getUserFromToken(token);
 }
+
 
 export function getUserIfValidCredentials(credentials) {
     return { username: "test", role: "teacher" }

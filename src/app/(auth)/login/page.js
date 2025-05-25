@@ -46,7 +46,7 @@ export default function Login() {
     })
 
     if (res.ok) {
-      router.push('/courses/1')
+      router.push('/courses')
     } else {
       setError('Invalid login or password')
     }

@@ -4,10 +4,12 @@ import * as React from "react";
 import { notFound } from "next/navigation";
 import { getUserFromTokenCookie } from "@/app/lib/auth";
 import Button from "@/components/ui/Button";
+import { cookies } from 'next/headers';
+import { redirect } from "next/navigation"; 
 
 
 export default async function Layout({ children, params }) {
-    const user = await getUserFromTokenCookie()
+    const user = getUserFromTokenCookie(cookies());
     if (!user) {
       redirect('/login')
     }

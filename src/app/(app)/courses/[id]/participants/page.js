@@ -1,10 +1,14 @@
 import { notFound } from "next/navigation";
 import { getUserFromTokenCookie } from "@/app/lib/auth";
 import { getCourseParticipants } from "@/app/lib/courses";
+import { cookies } from 'next/headers';
+import { redirect } from "next/navigation"; 
 
 export default async function Participants({ params }) {
-  const user = await getUserFromTokenCookie();
-  if (!user) return <>Not logged in</>;
+  const user = getUserFromTokenCookie(cookies());
+  if (!user) {
+    redirect('/login')
+  }
 
   const { id } = params;
   const participants = await getCourseParticipants(id);

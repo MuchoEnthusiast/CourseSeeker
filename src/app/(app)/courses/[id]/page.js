@@ -1,7 +1,16 @@
 import Topic from "@/components/ui/Topic";
 import { notFound } from "next/navigation";
 import { getCourseById, getCourseTopics } from "@/app/lib/courses";
-import { getUserFromTokenCookie } from "@/app/lib/auth";
+import AddTopicForm from '@/components/AddTopicForm';
+import { getUserFromTokenCookie } from '@/app/lib/auth';
+import { cookies } from 'next/headers';
+
+
+
+
+
+
+
 
 export default async function Course({ params }) {
 
@@ -9,10 +18,16 @@ export default async function Course({ params }) {
   const course = await getCourseById(id);
   if (!course) notFound();
 
+  const user = getUserFromTokenCookie(cookies());
   const topics = await getCourseTopics(id);
+
 
   return (
     <div>
+      {(user?.role === 'admin' || user?.role === 'teacher') && (
+        <AddTopicForm courseId={id} />
+      )}
+
       {topics.map((topic, index) => (
         <Topic key={index} topic={topic} />
       ))}
