@@ -1,4 +1,5 @@
 import { getUserFromTokenCookie } from "@/lib/auth"
+import { isUserEnrolled } from "@/lib/data"
 import { getDB } from "@/lib/db"
 
 export async function POST(req) {
@@ -6,12 +7,12 @@ export async function POST(req) {
   if(!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
   if(user.role !== "teacher") return NextResponse.json({ error: 'You must have role teacher' }, { status: 401 })
 
-  const { name } = await req.json()
+  const { name, password } = await req.json()
   if (!name) return new Response('Missing name', { status: 400 })
 
   const db = await getDB()
   try {
-    const result = await db.run('INSERT INTO courses (name, teacher) VALUES (?, ?)', [name, user.username])
+    const result = await db.run('INSERT INTO courses (name, password, teacher) VALUES (?, ?, ?)', [name, password !== undefined ? password : '', user.username])
     await db.run('INSERT INTO user_course (username, courseId) VALUES (?, ?)', [user.username, result.lastID])
     return Response.json({ id: result.lastID }, { status: 201 })
   } catch(err) {
@@ -26,6 +27,8 @@ export async function DELETE(_, { params }) {
 
   const db = await getDB()
   const courseId = parseInt((await params).id)
+
+  if(!await isUserEnrolled(user.username, courseId)) return NextResponse.json({ error: 'Not enrolled' }, { status: 401 })
 
   const result = await db.run('DELETE FROM courses WHERE id = ?', [courseId])
 

@@ -9,6 +9,8 @@ import { redirect } from 'next/navigation'
 
 import { Button, Col, Container, Row, Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from "react-bootstrap";
 import CreateCourseButton from "@/components/ui/CreateCourseButton";
+import NavbarDropdownMenu from '@/components/ui/NavbarDropdownMenu';
+import SearchCourseField from '@/components/ui/SearchCourseField';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,6 +34,7 @@ export default async function RootLayout({ children }) {
     return <>Not logged in</>
   }
 
+
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
@@ -53,7 +56,7 @@ export default async function RootLayout({ children }) {
               <Link href="/courses/" passHref>
                 Courses</Link>
               <div className="find-course">
-                <input type="text" className="form-control" placeholder="Find course..."></input>
+                <SearchCourseField />
               </div>
               <div className="d-flex gap-2 ms-auto">
                 {user && user.role === 'admin' && (
@@ -62,14 +65,17 @@ export default async function RootLayout({ children }) {
                 {user.role === "teacher" && (<CreateCourseButton />)}
                 <Dropdown className="ms-auto">
                   <DropdownToggle variant="secondary" id="dropdown-basic">
-                    Name Surname
+                    {user.username}
                   </DropdownToggle>
                   <DropdownMenu variant="dark">
-                    <DropdownItem href="#/action-1">Profile</DropdownItem>
+                    <DropdownItem href="/">Profile</DropdownItem>
                     <DropdownItem href="/logout">Log out</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
               </div>
+              {/* <div className="d-flex gap-2 ms-auto">
+              <NavbarDropdownMenu/>
+              </div> */}
             </div>
           </header>
           <div className="main">

@@ -6,6 +6,7 @@ import { getUserFromTokenCookie } from "@/lib/auth"
 import EnrollDialog from "@/components/ui/EnrollDialog";
 import UnenrollButton from "@/components/ui/UnenrollButton";
 import DeleteCourseButton from "@/components/ui/DeleteCourseButton";
+import ShareButton from "@/components/ui/ShareButton";
 
 export default async function Layout({ children, params }) {
   const user = await getUserFromTokenCookie()
@@ -31,6 +32,7 @@ export default async function Layout({ children, params }) {
             <h1 className="fw-bold">{course.name}</h1>
             
           </div>
+          <ShareButton />
           <UnenrollButton user={user} id={id} />
           { user.role === "teacher" && (<DeleteCourseButton id = {id} />) }
         </div>
@@ -50,29 +52,10 @@ export default async function Layout({ children, params }) {
             </div>
           </div>
         </div>
-
-        {/* <div className="container h-100 d-flex justify-content-center align-items-center">
-          <div className="card rounded-5 shadow" style={{maxWidth: "900px"}}>
-            <div className="card-header bg-white border-0">
-              <nav className="nav justify-content-center gap-3">
-                <Link className="btn border-0 text-black bg-transparent" href={`/courses/${id}`}>Topics</Link>
-                <Link className="btn border-0 text-black bg-transparent" href={`/courses/${id}/participants`}>Participants</Link>
-                <Link className="btn border-0 text-black bg-transparent" href={`/courses/${id}/grades`}>Grades</Link>
-                <Link className="btn border-0 text-black bg-transparent" href={`/courses/${id}/chat`}>Chat</Link>
-              </nav>
-            </div>
-
-            <div className="card-body">
-              <h5 className="card-title text-center">Welcome</h5>
-              <p className="card-text text-center">This is a full-page card with rounded corners and a centered nav bar.</p>
-            </div>
-
-          </div>
-        </div> */}
       </>
       ) : (
         <>
-          <EnrollDialog id = {id} user = {user} />
+          <EnrollDialog id = {id} user = {user} askPassword = {course.password !== undefined && course.password !== ''} />
         </>
       )}
     </div>

@@ -1,39 +1,32 @@
+import { computeHash, randomSalt } from '@/lib/auth'
+import { getDB } from '@/lib/db'
 import { NextResponse } from 'next/server'
-import { addUser } from '@/app/lib/users'
 
 export async function POST(req) {
-    const { name, email, password } = await req.json()
+  const { username, role, name, surname, password } = await req.json()
 
-    if (!name || !email || !password) {
-        return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
+  if (!username || !role || !name || !surname || !password) {
+    return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+  }
+
+  const db = await getDB()
+
+  try {
+    const salt = randomSalt()
+    const passwordHash = computeHash(password, salt)
+
+    await db.run(`
+      INSERT INTO users (username, role, name, surname, passwordHash, salt)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `, [username, role, name, surname, passwordHash, salt])
+
+    return NextResponse.json({ message: 'User registered successfully' }, { status: 201 })
+  } catch (err) {
+    if (err.message.includes('UNIQUE')) {
+      return NextResponse.json({ error: 'Username already exists' }, { status: 409 })
     }
 
-    try {
-        await addUser({ name, email, password })
-        return NextResponse.json({ success: true })
-    } catch (e) {
-        return NextResponse.json({ error: e.message }, { status: 400 })
-    }
+    console.error('Registration error:', err)
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  }
 }
-
-
-
-
-
-
-// import { addUser } from '@/app/lib/users'
-// import { NextResponse } from 'next/server'
-
-// export async function POST(req) {
-//   const { username, password } = await req.json()
-//   if (!username || !password) {
-//     return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
-//   }
-
-//   try {
-//     await addUser({ username, password })
-//     return NextResponse.json({ success: true })
-//   } catch (e) {
-//     return NextResponse.json({ error: e.message }, { status: 400 })
-//   }
-// }

@@ -144,13 +144,15 @@ export default function Chat() {
       <div className="text-center mb-2" style={{ fontSize: '0.9rem' }}>Chat</div>
       <div className="flex-grow-1 overflow-auto mb-2" ref={scrollRef}>
 
-        {Object.entries(data.messages).map(([timestamp, message]) => (
+        {Object.entries(data.messages).length > 0 ? Object.entries(data.messages).map(([timestamp, message]) => (
           <div key={timestamp} className="mb-2">
             <div style={{ fontStyle: 'italic', color: generateColor(message.username) }}>{message.username}</div>
             <div className="bg-light p-2 rounded">{message.text}</div>
             <div className="text-end text-muted" style={{ fontSize: '0.7rem' }}>{new Date(Number(timestamp)).toDateString()}</div>
           </div>
-        ))}
+        )) : (
+            <div className="container text-center"> <span><i>No messages yet</i></span></div>
+        )}
       </div>
       
       <div className="input-group">

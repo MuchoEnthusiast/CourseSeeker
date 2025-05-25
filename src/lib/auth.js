@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken'
 import { cookies } from 'next/headers'
 import { getElement } from './data'
+import crypto from 'crypto'
+import { getDB } from './db'
 
 //TODO: FOR TESTING ONLY
 const SECRET = "1cf552af5146b96aa267b1b8c6ddcefb05b1e02cfaf450489180a57a87d633efff0c8f9133e86091a3cd4c2c4fc99df479b34430f42a2cb0f40d74de5af73f8d"
@@ -26,10 +28,21 @@ export async function getUserFromTokenCookie() {
     return user
 }
 
+export function computeHash(payload, salt) {
+  return crypto.pbkdf2Sync(payload, salt, 100000, 64, 'sha512').toString('hex')
+}
+
+export function randomSalt() {
+  return crypto.randomBytes(16).toString('hex')
+}
+
 export async function getUserIfValidCredentials(credentials) {
   const user = await getElement('SELECT * FROM users WHERE username = ?', [credentials.username])
-  //TODO: check passwordHash with salt
   if(!user)
     return undefined
+
+  if(computeHash(credentials.password, user.salt) !== user.passwordHash)
+    return undefined
+
   return {username: user.username, role: user.role}
 }

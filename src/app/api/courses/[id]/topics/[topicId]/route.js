@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getUserFromTokenCookie } from '@/lib/auth'
-import { getMessages, addMessage } from '@/lib/data'
+import { getMessages, addMessage, isUserEnrolled } from '@/lib/data'
 import { getDB } from '@/lib/db'
 
 
@@ -12,6 +12,9 @@ export async function POST(req, { params }) {
   const db = await getDB()
   const courseId = parseInt((await params).id)
   const { title, description } = await req.json()
+
+  if(!await isUserEnrolled(user.username, courseId)) return NextResponse.json({ error: 'Not enrolled' }, { status: 401 })
+
 
   if (!title || !description)
     return new Response('Missing title or description', { status: 400 })
@@ -34,6 +37,8 @@ export async function PUT(req, { params }) {
   const topicId = parseInt((await params).topicId)
   const { title, description } = await req.json()
 
+  if(!await isUserEnrolled(user.username, courseId)) return NextResponse.json({ error: 'Not enrolled' }, { status: 401 })
+
   if (!title || !description)
     return new Response('Missing title or description', { status: 400 })
 
@@ -54,6 +59,8 @@ export async function DELETE(req, { params }) {
   const db = await getDB()
   const courseId = parseInt((await params).id)
   const topicId = parseInt((await params).topicId)
+
+  if(!await isUserEnrolled(user.username, courseId)) return NextResponse.json({ error: 'Not enrolled' }, { status: 401 })
 
   const result = await db.run(
     'DELETE FROM topics WHERE id = ? AND courseId = ?',

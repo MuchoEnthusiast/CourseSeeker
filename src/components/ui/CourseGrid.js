@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 
-export default function CourseGrid({ user, enrolledCourses, allCourses }) {
-  const [showAll, setShowAll] = useState(false)
+export default function CourseGrid({ user, enrolledCourses, allCourses, searchQuery }) {
+  const [showAll, setShowAll] = useState(true)
   
   const courses = showAll ? allCourses : enrolledCourses
 
@@ -22,13 +22,20 @@ export default function CourseGrid({ user, enrolledCourses, allCourses }) {
     <div className="container my-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Ciao, {user.username}!</h2>
-        <button className="btn btn-outline-primary" onClick={handleShowAll}>
+        {/* <button className="btn btn-outline-primary" onClick={handleShowAll}>
           {showAll ? 'Show Enrolled Only' : 'Show All Courses'}
+        </button> */}
+        <button className={`btn ${!showAll ? 'btn-primary' : 'btn-outline-primary'}`} onClick={handleShowAll} >
+          Show Enrolled Only
         </button>
       </div>
 
+      {searchQuery && (
+        <h3>Search results for: "{searchQuery}"</h3>
+      )}
+
       <div className="row g-4">
-        {courses.map(course => (
+        {courses.length > 0 ? courses.map(course => (
           <div key={course.id} className="col-md-4">
             <div className="card shadow border-0" style={{
               borderRadius: '20px',
@@ -41,6 +48,7 @@ export default function CourseGrid({ user, enrolledCourses, allCourses }) {
                   <p className="card-subtitle text-muted" style={{ fontSize: '0.9rem' }}>
                     {course.teacher}
                   </p>
+                  {enrolledCourses.some(c => c.id === course.id) && (<span className="card-subtitle text-success" style={{ fontSize: '0.9rem', fontStyle: 'italic' }}>Enrolled</span>)}
                 </div>
                 <i className="bi bi-image text-muted fs-3"></i>
               </div>
@@ -64,8 +72,10 @@ export default function CourseGrid({ user, enrolledCourses, allCourses }) {
               </div>
             </div>
           </div>
-        ))}
+        )) : (
+                <h4>No courses available</h4>
+             )}
       </div>
     </div>
-  )
+  ) 
 }

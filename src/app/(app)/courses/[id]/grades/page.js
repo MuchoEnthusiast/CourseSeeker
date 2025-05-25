@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getCourse, getGrades } from "@/lib/data"
+import { getCourse, getGrades, isUserEnrolled } from "@/lib/data"
 import { getUserFromTokenCookie } from "@/lib/auth"
 import GradesTableStudent from "@/components/ui/GradesTableStudent";
 import GradesTableTeacher from "@/components/ui/GradesTableTeacher";
@@ -13,6 +13,8 @@ export default async function Grades({ params }) {
   if(!course) {
     notFound()
   }
+
+  if(!await isUserEnrolled(user.username, id)) return <>Not enrolled</>
 
 
   return (

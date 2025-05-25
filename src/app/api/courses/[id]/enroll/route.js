@@ -1,7 +1,8 @@
 import { getUserFromTokenCookie } from "@/lib/auth"
 import { getDB } from "@/lib/db"
+import { NextResponse } from "next/server"
 
-export async function GET(req, { params }) {
+export async function POST(req, { params }) {
   const user = await getUserFromTokenCookie()
   if(!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
 
@@ -13,6 +14,15 @@ export async function GET(req, { params }) {
   }
 
   const db = await getDB()
+
+  const {password} = await req.json()
+  const course = await db.get(
+                              'SELECT * FROM courses WHERE id = ?',
+                              [courseId]
+                            )
+  if(course.password !== undefined && course.password !== '' && password !== course.password) {
+    return NextResponse.json({ error: 'Invalid course password' }, { status: 401 })
+  }
 
   try {
     await db.run(

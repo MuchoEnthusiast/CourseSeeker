@@ -147,6 +147,7 @@ async function initDB() {
     CREATE TABLE IF NOT EXISTS courses (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL UNIQUE,
+      password TEXT NOT NULL,
       teacher TEXT NOT NULL,
       FOREIGN KEY (teacher) REFERENCES users(username) ON DELETE CASCADE
     );
@@ -205,10 +206,18 @@ export async function populateDB() {
   // if(populated)
   //   return
   // populated = true
-  
+
+  await initDB()
 
   console.log("POPULATING DB")
   const db = await getDB()
+  const tables = await db.all(`
+    SELECT name
+    FROM sqlite_master
+    WHERE type = 'table'
+    ORDER BY name;
+  `)
+  console.log(tables)
 
   // await db.exec(`
   //   DELETE FROM attachments;
@@ -223,16 +232,17 @@ export async function populateDB() {
 
   const now = Math.floor(Date.now() / 1000)
 
+  //in those test values the password is the username
   await db.run(`
     INSERT OR IGNORE INTO users (username, role, name, surname, passwordHash, salt)
     VALUES
-      ('alice', 'student', 'Alice', 'Liddell', 'hash1', 'salt1'),
-      ('bob', 'teacher', 'Bob', 'Builder', 'hash2', 'salt2')
+      ('alice', 'student', 'Alice', 'Liddell', 'f3104e622245caf523d083fe2e65d79d7078a29c422062a14bf555735ee8168813073e9b9103d67b370662ac0ff836be3ec0d57e0642510e8e3fa2368bbe8e6d', '765e78308f78693541df54ef0785a084'),
+      ('bob', 'teacher', 'Bob', 'Builder', '6072c6eb7c584cfe4c3761769eb136a912f542bfdd0a53f49949a1bf4bed5ed19e09f69aed62a2d1a797e4647b6aaf11e1673b350982df68cddd277691d10a20', 'e3ebe7cf7ad1a876f525d9234e3429ff')
   `)
 
   await db.run(`
-    INSERT OR IGNORE INTO courses (id, name, teacher)
-    VALUES (1, 'Math', 'bob'), (2, 'Physics', 'bob')
+    INSERT OR IGNORE INTO courses (id, name, password, teacher)
+    VALUES (1, 'Math', '', 'bob'), (2, 'Physics', 'password', 'bob')
   `)
 
   await db.run(`

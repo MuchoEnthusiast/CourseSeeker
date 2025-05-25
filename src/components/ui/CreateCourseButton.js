@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 export default function CreateCourseButton() {
   const [show, setShow] = useState(false)
   const [title, setTitle] = useState('')
+  const [password, setPassword] = useState('')
   const router = useRouter()
 
   const handleCreate = async () => {
@@ -14,7 +15,7 @@ export default function CreateCourseButton() {
     const res = await fetch('/api/courses/0', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: title })
+      body: JSON.stringify({ name: title, password })
     })
 
     const data = await res.json()
@@ -47,10 +48,17 @@ export default function CreateCourseButton() {
               <div className="modal-body">
                 <input
                   type="text"
-                  className="form-control"
+                  className="form-control mb-3"
                   placeholder="Course title"
                   value={title}
                   onChange={e => setTitle(e.target.value)}
+                />
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Password (optional)"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
               <div className="modal-footer">

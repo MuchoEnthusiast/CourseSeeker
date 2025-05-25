@@ -1,31 +1,5 @@
-// 'use client'
-// import { useRouter } from 'next/navigation'
-
-// export default function Login() {
-//   const router = useRouter()
-//   const login = async () => {
-//     const res = await fetch('/api/login', {
-//       method: 'POST',
-//       body: JSON.stringify({
-//         username: "test",
-//         password: "test"
-//       })
-//     })
-
-//     if (res.ok) router.push('/courses/1')
-//     else alert('Login failed')
-//   }
-//   return (
-//     <div>
-//       <h1>Login Page</h1>
-//       <button onClick={login}>Login</button>
-//     </div>
-//   );
-// }
-
-
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -37,7 +11,15 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
-  const login = async () => {
+  useEffect(() => {
+    (async () => {
+      const res = await fetch('/api/login')
+      if (res.ok) router.push('/courses')
+    })()
+  }, [])
+
+  const login = async (e) => {
+    e.preventDefault()
     setError('')
     const res = await fetch('/api/login', {
       method: 'POST',
@@ -64,27 +46,30 @@ export default function Login() {
       />
 
       <div className="login-form">
-        <input
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={e => setUsername(e.target.value)}
-          className="login-input"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          className="login-input"
-        />
-        <button onClick={login} className="login-button">Login</button>
-        {error && <p className="login-error">{error}</p>}
-        <div className="login-links">
-          <Link href="/forgot-password" passHref>Forgot your password?</Link>
-          <Link href="/register" passHref>Create a new account</Link>
-        </div>
-
+        <form onSubmit={login} className="login-form">
+          <input
+            type="text"
+            placeholder="Username"
+            value={email}
+            onChange={e => setUsername(e.target.value)}
+            className="login-input"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            className="login-input"
+          />
+          <button type="submit" className="login-button">Login</button>
+        
+          {error && <p className="login-error">{error}</p>}
+          <div className="login-links">
+            <Link href="/forgot-password" passHref>Forgot your password?</Link>
+            <Link href="/register" passHref>Create a new account</Link>
+            
+          </div>
+        </form>
       </div>
     </div>
   )

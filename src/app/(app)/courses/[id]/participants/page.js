@@ -1,4 +1,4 @@
-import { getCourse } from "@/lib/data"
+import { getCourse, isUserEnrolled } from "@/lib/data"
 import { getUserFromTokenCookie } from "@/lib/auth"
 
 function capitalize(str) {
@@ -16,6 +16,8 @@ export default async function Participants({ params }) {
   if(!course) {
     notFound()
   }
+
+  if(!await isUserEnrolled(user.username, id)) return <>Not enrolled</>
 
   return (
     <div>

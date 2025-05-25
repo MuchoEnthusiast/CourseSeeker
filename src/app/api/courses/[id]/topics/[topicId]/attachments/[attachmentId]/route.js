@@ -1,4 +1,5 @@
 import { getUserFromTokenCookie } from "@/lib/auth"
+import { isUserEnrolled } from "@/lib/data"
 import { getDB } from "@/lib/db"
 
 export async function POST(req, { params }) {
@@ -10,6 +11,9 @@ export async function POST(req, { params }) {
   const courseId = parseInt((await params).id)
   const topicId = parseInt((await params).topicId)
   const { name, file } = await req.json()
+
+  if(!await isUserEnrolled(user.username, courseId)) return NextResponse.json({ error: 'Not enrolled' }, { status: 401 })
+  
   
   if (!name || !file) {
     return new Response('Missing name or file', { status: 400 })
@@ -40,6 +44,8 @@ export async function DELETE(_, { params }) {
   const courseId = parseInt((await params).id)
   const topicId = parseInt((await params).topicId)
   const attachmentId = parseInt((await params).attachmentId)
+
+  if(!await isUserEnrolled(user.username, courseId)) return NextResponse.json({ error: 'Not enrolled' }, { status: 401 })
 
   try {
     const attachment = await db.get(`

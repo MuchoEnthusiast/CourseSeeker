@@ -1,4 +1,5 @@
 import { getUserFromTokenCookie } from "@/lib/auth"
+import { isUserEnrolled } from "@/lib/data"
 import { getDB } from "@/lib/db"
 import { NextResponse } from "next/server"
 
@@ -8,6 +9,8 @@ export async function POST(req, { params }) {
   if(user.role !== "teacher") return NextResponse.json({ error: 'You must have role teacher' }, { status: 401 })
 
   const courseId = parseInt((await params).id)
+  if(!await isUserEnrolled(user.username, courseId)) return NextResponse.json({ error: 'Not enrolled' }, { status: 401 })
+
   const { username, name, gradeNumber } = await req.json()
 
   if (!courseId || !username || !name || gradeNumber == null)
@@ -36,6 +39,9 @@ export async function DELETE(_, { params }) {
   const user = await getUserFromTokenCookie()
   if(!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
   if(user.role !== "teacher") return NextResponse.json({ error: 'You must have role teacher' }, { status: 401 })
+
+  const courseId = parseInt((await params).id)
+  if(!await isUserEnrolled(user.username, courseId)) return NextResponse.json({ error: 'Not enrolled' }, { status: 401 })
 
   const gradeId = parseInt((await params).gradeId)  
 

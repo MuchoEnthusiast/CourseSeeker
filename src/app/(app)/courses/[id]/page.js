@@ -1,6 +1,6 @@
 import Topic from "@/components/ui/Topic";
 import { notFound } from "next/navigation";
-import { getCourse } from "@/lib/data"
+import { getCourse, isUserEnrolled } from "@/lib/data"
 import { getUserFromTokenCookie } from "@/lib/auth"
 import CreateTopicButton from "@/components/ui/CreateTopicButton";
 
@@ -10,10 +10,11 @@ export default async function Course({ params }) {
 
   const { id } = await params
   const course = await getCourse(id)
-  
   if(!course) {
     notFound()
   }
+
+  if(!await isUserEnrolled(user.username, id)) return <>Not enrolled</>
   
   return (
     <div>

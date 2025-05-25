@@ -8,14 +8,14 @@ export default async function GradesTableTeacher({ user, id }) {
   const grades = await db.all(`
     SELECT id, username, name AS gradeName, gradeNumber
     FROM grades
-    WHERE courseId = ?
+    WHERE courseId = ? ORDER BY timestamp ASC
   `, [id])
 
   const courseUsers = await db.all(`
     SELECT u.username, u.name, u.surname, u.role
     FROM users u
     JOIN user_course uc ON uc.username = u.username
-    WHERE uc.courseId = ?
+    WHERE uc.courseId = ? ORDER BY u.username ASC
   `, [id])
 
 
