@@ -28,7 +28,6 @@ export default async function RootLayout({ children }) {
   const user = await getUserFromTokenCookie()
   if (!user) {
     redirect('/login')
-    return <>Not logged in</>
   }
 
   return (
@@ -54,10 +53,11 @@ export default async function RootLayout({ children }) {
               <div className="find-course">
                 <input type="text" className="form-control" placeholder="Find course..."></input>
               </div>
-              {user.role === 'admin' && (
+              {user && user.role === 'admin' && (
                 <Link href="/admin" className="ms-3">Admin</Link>
               )}
 
+              {user && (
               <Dropdown className="ms-auto">
                 <DropdownToggle variant="secondary" id="dropdown-basic">
                   {user.name}
@@ -68,6 +68,7 @@ export default async function RootLayout({ children }) {
                   <DropdownItem href="/logout">Exit</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
+              )}
 
             </div>
           </header>

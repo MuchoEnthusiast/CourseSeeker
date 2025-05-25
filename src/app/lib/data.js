@@ -1,5 +1,5 @@
 const courses = {
-  "1": { 
+  "5": { 
     id: "1", 
     name: "React Basics",
     topics: [

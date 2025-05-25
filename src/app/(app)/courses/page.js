@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link'
 
 // Browse courses page
 export default function BrowseCoursesPage() {
@@ -48,6 +49,19 @@ export default function BrowseCoursesPage() {
       <h1 style={styles.heading}>Browse Courses</h1>
       <div style={styles.courseContainer}>
         {courses.map((course) => (
+          <Link key={course.id} href={`/courses/${course.id}`} style={{ textDecoration: 'none' }}>
+            <div style={styles.courseCard}>
+              <div style={styles.imagePlaceholder}></div>
+              <h3 style={styles.courseTitle}>{course.name}</h3>
+              <p style={styles.courseDescription}>
+                {course.description || 'No description available'}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
+      {/* <div style={styles.courseContainer}>
+        {courses.map((course) => (
           <div key={course.id} style={styles.courseCard}>
             <div style={styles.imagePlaceholder}></div>
             <h3 style={styles.courseTitle}>{course.title}</h3>
@@ -56,7 +70,7 @@ export default function BrowseCoursesPage() {
             </p>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }
