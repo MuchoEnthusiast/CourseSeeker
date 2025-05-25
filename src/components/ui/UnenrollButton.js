@@ -12,6 +12,7 @@ export default function UnenrollButton({ id, user }) {
     if (res.ok) {
       setShowModal(false)
       router.push('/courses')
+      router.refresh()
     } else {
       alert('Failed to unenroll.')
     }

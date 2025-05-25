@@ -41,7 +41,6 @@ export default function Chat() {
 
   const [data, setData] = useState({ messages: {}, lastTimestamp: 0 })
   const dataRef = useRef({ messages: {}, lastTimestamp: 0 })
-  const [user, setUser] = useState({ username: "null" })
 
   const retrieveMessages = async () => {
     let currentData = dataRef.current
@@ -77,32 +76,7 @@ export default function Chat() {
     console.log(currentData)
   }
 
-  // useEffect(() => {
-  //   (async () => {
-  //     await fetch('/api/websocketinit')
-
-  //     socketRef.current = new WebSocket('ws://localhost:3000')
-
-  //     socketRef.current.onmessage = (event) => {
-  //       console.log(event)
-  //     }
-  //   })()
-
-  //   return () => socketRef.current.close()
-  // }, [])
-
   useEffect(() => {
-
-    (async () => {
-      const res = await fetch('/api/login')
-      if(!res.ok) {
-        console.log("Error retrieving user")
-        return
-      }
-
-      setUser(await res.json())
-    })()
-
     retrieveMessages()
 
     const interval = setInterval(retrieveMessages, 1000)
@@ -148,7 +122,7 @@ export default function Chat() {
           <div key={timestamp} className="mb-2">
             <div style={{ fontStyle: 'italic', color: generateColor(message.username) }}>{message.username}</div>
             <div className="bg-light p-2 rounded">{message.text}</div>
-            <div className="text-end text-muted" style={{ fontSize: '0.7rem' }}>{new Date(Number(timestamp)).toDateString()}</div>
+            <div className="text-end text-muted" style={{ fontSize: '0.8rem' }}>{new Date(Number(timestamp)).toLocaleString()}</div>
           </div>
         )) : (
             <div className="container text-center"> <span><i>No messages yet</i></span></div>

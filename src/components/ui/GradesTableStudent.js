@@ -19,7 +19,7 @@ export default async function GradesTableStudent({ user, id }) {
           <div key={i} className="mb-3">
             <div className="row">
               <div className="col-4">{g.name}</div>
-              <div className="col-4">{g.date}</div>
+              <div className="col-4">{new Date(g.timestamp).toLocaleDateString()}</div>
               <div className="col-4">{g.gradeNumber}</div>
             </div>
             {i < grades.length - 1 && <hr className="my-2" />}

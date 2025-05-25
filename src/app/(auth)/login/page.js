@@ -65,7 +65,7 @@ export default function Login() {
         
           {error && <p className="login-error">{error}</p>}
           <div className="login-links">
-            <Link href="/forgot-password" passHref>Forgot your password?</Link>
+            <Link href="/login" passHref>Forgot your password?</Link>
             <Link href="/register" passHref>Create a new account</Link>
             
           </div>

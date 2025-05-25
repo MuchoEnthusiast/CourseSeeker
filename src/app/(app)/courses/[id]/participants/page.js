@@ -30,7 +30,7 @@ export default async function Participants({ params }) {
           </tr>
         </thead>
         <tbody>
-          {course.users.map((user, idx) => (
+          {course.users.sort((a, b) => (a.name + a.surname).localeCompare(b.name + b.surname)).map((user, idx) => (
             <tr key={idx}>
               <td>
                 <div className="d-flex align-items-center">

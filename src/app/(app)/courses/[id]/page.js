@@ -20,9 +20,11 @@ export default async function Course({ params }) {
     <div>
       {user.role === 'teacher' && (<CreateTopicButton id={id} />)}
       {
-        course.topics.map((topic, index) => (
+        course.topics.length > 0 ? course.topics.map((topic, index) => (
           <Topic key = {index} id = {id} topic = {topic} user = {user} />
-        ))
+        )) : (
+          <h5 className="text-center">No topics yet</h5>
+        )
       }
     </div>
   );

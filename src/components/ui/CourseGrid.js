@@ -31,7 +31,7 @@ export default function CourseGrid({ user, enrolledCourses, allCourses, searchQu
       </div>
 
       {searchQuery && (
-        <h3>Search results for: "{searchQuery}"</h3>
+        <h3>Search results for: {"\"" + searchQuery + "\""}</h3>
       )}
 
       <div className="row g-4">

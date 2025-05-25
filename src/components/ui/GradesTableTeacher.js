@@ -28,7 +28,7 @@ export default async function GradesTableTeacher({ user, id }) {
     allGradeNames.add(gradeName)
   }
 
-  const sortedGradeNames = Array.from(allGradeNames).sort()
+  const sortedGradeNames = Array.from(allGradeNames)
 
   const rows = Object.entries(users).map(([username, grades]) => {
     const gradeValues = sortedGradeNames.map(name => grades[name] ?? '-')
@@ -38,7 +38,7 @@ export default async function GradesTableTeacher({ user, id }) {
       : '-'
 
     return { username, gradeValues, average }
-  })
+  }).sort((a, b) => a.username.localeCompare(b.username))
 
   return (
     <div className="container mt-5">
@@ -70,7 +70,7 @@ export default async function GradesTableTeacher({ user, id }) {
         </tbody>
       </table>
     ) : (
-      <span>No grades yet</span>
+      <h5 className="text-center">No grades yet</h5>
     )}
     </div>
   )
