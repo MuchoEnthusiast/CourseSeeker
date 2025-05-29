@@ -45,32 +45,38 @@ export default function UserProfileInfoFields({ user, editMode, formData, handle
     setCities(selected?.cities || []);
   }, [formData.country, countries]);
 
-  const renderField = (label, name, value, textarea = false) => (
+  const renderField = (label, name, value, textarea = false) => {
+  const isReadOnlyField = ["username", "name", "role"].includes(name);
+  const readOnly = !editMode || isReadOnlyField;
+
+  return (
     <div className="mb-3">
       <label className="form-label fw-semibold">{label}</label>
-      {editMode ? (
-        textarea ? (
-          <textarea
-            name={name}
-            value={value}
-            onChange={handleChange}
-            className="form-control"
-            rows={2}
-          />
-        ) : (
-          <input
-            type="text"
-            name={name}
-            value={value}
-            onChange={handleChange}
-            className="form-control"
-          />
-        )
+      {textarea ? (
+        <textarea
+          name={name}
+          value={value}
+          onChange={handleChange}
+          className="form-control"
+          rows={2}
+          readOnly={readOnly}
+          style={readOnly ? { backgroundColor: "#f8f9fa", cursor: editMode && isReadOnlyField ? "not-allowed" : "default" } : {}}
+        />
       ) : (
-        <p className="form-control-plaintext text-muted">{value || "Not provided"}</p>
+        <input
+          type="text"
+          name={name}
+          value={value}
+          onChange={handleChange}
+          className="form-control"
+          readOnly={readOnly}
+          style={readOnly ? { backgroundColor: "#f8f9fa", cursor: editMode && isReadOnlyField ? "not-allowed" : "default" } : {}}
+        />
       )}
     </div>
   );
+};
+
 
   return (
     <div className="mt-3">
