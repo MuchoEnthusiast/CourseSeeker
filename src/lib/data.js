@@ -204,3 +204,40 @@ export async function updateLastVisited(username, courseId) {
     [Date.now(), username, courseId]
   )
 }
+
+export async function getUserDetailsAndCourses(username) {
+  const db = await getDB();
+
+  const user = await db.get(
+    `SELECT u.username, u.role, u.name, u.surname, p.nationality, p.city, p.country, p.description, p.photo
+     FROM users u
+     LEFT JOIN profile p ON u.username = p.username
+     WHERE u.username = ?`,
+    [username]
+  );
+
+  if (!user) return null;
+
+  const enrolledCourses = await db.all(
+    `SELECT c.id, c.name FROM user_course uc
+     JOIN courses c ON uc.courseId = c.id
+     WHERE uc.username = ?`,
+    [username]
+  );
+
+  const taughtCourses = await db.all(
+    `SELECT id, name FROM courses WHERE teacher = ?`,
+    [username]
+  );
+
+  // Combine courses based on user role
+  const courses = user.role === 'teacher' ? taughtCourses : enrolledCourses;
+
+  return {
+    ...user,
+    courses, // This is what UserCoursesCard expects
+    enrolledCourses,
+    taughtCourses,
+  };
+}
+

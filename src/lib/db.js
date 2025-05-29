@@ -4,7 +4,7 @@ import path from 'path'
 
 export async function getDB() {
   const db = await open({
-    filename: path.join(process.cwd(), 'sqlite.db'),
+    filename: path.join(process.cwd(), process.env.DATABASE_FILE || 'sqlite.db'),
     driver: sqlite3.Database
   })
 
@@ -73,9 +73,38 @@ export async function getDB() {
       FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE,
       FOREIGN KEY (courseId) REFERENCES courses(id) ON DELETE CASCADE
     );
+
+    CREATE TABLE IF NOT EXISTS assignment (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      courseId INTEGER NOT NULL,
+      title TEXT NOT NULL,
+      description TEXT,
+      deadline DATETIME NOT NULL,
+      FOREIGN KEY (courseId) REFERENCES courses(id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS submission (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      assignmentId INTEGER NOT NULL,
+      username TEXT NOT NULL,
+      content TEXT NOT NULL,
+      timestamp INTEGER NOT NULL,
+      FOREIGN KEY (assignmentId) REFERENCES assignment(id) ON DELETE CASCADE,
+      FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+    );
+
+      CREATE TABLE IF NOT EXISTS profile (
+    username TEXT PRIMARY KEY,
+    nationality TEXT,
+    city TEXT,
+    country TEXT,
+    description TEXT,
+    photo TEXT,
+    FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE
+  );
+
   `)
   //NOTE: Course password is not stored as salted hash because it is a low risk shared password, it could be stored as salted hash or just hash if desired
 
   return db
 }
-

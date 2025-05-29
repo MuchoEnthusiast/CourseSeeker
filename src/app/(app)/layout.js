@@ -68,8 +68,8 @@ export default async function RootLayout({ children }) {
                   <DropdownToggle variant="" id="dropdown-basic">
                     {user.username}
                   </DropdownToggle>
-                  <DropdownMenu  aria-labelledby="dropdownMenuButton">
-                    <DropdownItem href="/">Profile</DropdownItem>
+                  <DropdownMenu variant="dark">
+                    <DropdownItem href="/profile">Profile</DropdownItem>
                     <DropdownItem href="/logout">Log out</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
