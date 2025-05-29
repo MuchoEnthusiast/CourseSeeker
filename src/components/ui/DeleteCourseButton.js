@@ -11,7 +11,7 @@ export default function DeleteCourseButton({ id }) {
     const res = await fetch(`/api/courses/${id}`, { method: 'DELETE' })
     if (res.ok) {
       setShow(false)
-      router.push('/courses') // or wherever you want
+      router.push('/courses')
     } else {
       alert('Failed to delete course')
     }
