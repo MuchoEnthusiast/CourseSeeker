@@ -26,6 +26,8 @@ export const metadata = {
   description: "Education platform",
 };
 
+//This is the root layout of the web application authenticated area
+//It wraps all the authenticated area pages
 export default async function RootLayout({ children }) {
   const user = await getUserFromTokenCookie()
   if(!user) {
@@ -72,9 +74,6 @@ export default async function RootLayout({ children }) {
                   </DropdownMenu>
                 </Dropdown>
               </div>
-              {/* <div className="d-flex gap-2 ms-auto">
-              <NavbarDropdownMenu/>
-              </div> */}
             </div>
           </header>
           <div className="main">

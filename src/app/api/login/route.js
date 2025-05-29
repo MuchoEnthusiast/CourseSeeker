@@ -22,11 +22,12 @@ export async function POST(req) {
 
   const token = generateToken({username: user.username})
 
+  //To store on client and get on server the session token we use httponly cookie
   const res = NextResponse.json({ success: true })
   res.cookies.set('session_token', token, {
     httpOnly: true,
     path: '/',
-    maxAge: 3600
+    maxAge: 86400
   })
 
   return res

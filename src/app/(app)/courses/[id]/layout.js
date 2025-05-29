@@ -1,7 +1,7 @@
 import BackButton from "@/components/ui/BackButton";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getCourse, isUserEnrolled, updateLastVisited } from "@/lib/data"
+import { notFound, redirect } from "next/navigation";
+import { getCourse, isUserEnrolled, isUserOwner, updateLastVisited } from "@/lib/data"
 import { getUserFromTokenCookie } from "@/lib/auth"
 import EnrollDialog from "@/components/ui/EnrollDialog";
 import UnenrollButton from "@/components/ui/UnenrollButton";
@@ -10,7 +10,10 @@ import ShareButton from "@/components/ui/ShareButton";
 
 export default async function Layout({ children, params }) {
   const user = await getUserFromTokenCookie()
-  if(!user) return <>Not logged in</>
+  if(!user) {
+    redirect('/login')
+    return <>Not logged in</>
+  }
 
   const { id } = await params;
   const course = await getCourse(id)
@@ -20,6 +23,7 @@ export default async function Layout({ children, params }) {
 
   updateLastVisited(user.username, id)
   const userEnrolled = await isUserEnrolled(user.username, id)
+  const userOwner = await isUserOwner(user.username, id)
 
   return (
     <div>
@@ -34,7 +38,7 @@ export default async function Layout({ children, params }) {
           </div>
           <ShareButton />
           <UnenrollButton user={user} id={id} />
-          { user.role === "teacher" && (<DeleteCourseButton id = {id} />) }
+          { user.role === "teacher" && userOwner && (<DeleteCourseButton id = {id} />) }
         </div>
 
         <div className="container mt-3">

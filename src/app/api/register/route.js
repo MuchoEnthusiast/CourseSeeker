@@ -12,6 +12,7 @@ export async function POST(req) {
   const db = await getDB()
 
   try {
+    //Using hash with salt storage method for passwords
     const salt = randomSalt()
     const passwordHash = computeHash(password, salt)
 

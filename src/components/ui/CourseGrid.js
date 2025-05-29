@@ -22,9 +22,6 @@ export default function CourseGrid({ user, enrolledCourses, allCourses, searchQu
     <div className="container my-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Ciao, {user.username}!</h2>
-        {/* <button className="btn btn-outline-primary" onClick={handleShowAll}>
-          {showAll ? 'Show Enrolled Only' : 'Show All Courses'}
-        </button> */}
         <button className={`btn ${!showAll ? 'btn-primary' : 'btn-outline-primary'}`} onClick={handleShowAll} >
           Show Enrolled Only
         </button>

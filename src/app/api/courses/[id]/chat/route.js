@@ -27,6 +27,8 @@ export async function POST(req, { params }) {
 
   if(!await isUserEnrolled(user.username, id)) return NextResponse.json({ error: 'Not enrolled' }, { status: 401 })
 
+  //Just the message text is took from client
+  //The client is not trusted for timestamp and username
   const message = await req.json()
   message.timestamp = Date.now()
   message.username = user.username

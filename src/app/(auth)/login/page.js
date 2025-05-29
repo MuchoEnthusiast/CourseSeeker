@@ -7,10 +7,11 @@ import './login.css'
 
 export default function Login() {
   const router = useRouter()
-  const [email, setUsername] = useState('')
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
 
+  //If already logged in skip login page
   useEffect(() => {
     (async () => {
       const res = await fetch('/api/login')
@@ -24,7 +25,7 @@ export default function Login() {
     const res = await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: email, password })
+      body: JSON.stringify({ username, password })
     })
 
     if (res.ok) {
@@ -36,13 +37,12 @@ export default function Login() {
 
   return (
     <div className="login-container">
-      {/* <h1 className="login-title">/h1> */}
       <Image
         src="/courseseeker_logo_black.svg"
         width={250}
         height={50}
         alt="Courseseeker logo"
-        className="mb-8" // 👈 отступ в Tailwind
+        className="mb-8"
       />
 
       <div className="login-form">
@@ -50,7 +50,7 @@ export default function Login() {
           <input
             type="text"
             placeholder="Username"
-            value={email}
+            value={username}
             onChange={e => setUsername(e.target.value)}
             className="login-input"
           />
@@ -65,7 +65,6 @@ export default function Login() {
         
           {error && <p className="login-error">{error}</p>}
           <div className="login-links">
-            <Link href="/login" passHref>Forgot your password?</Link>
             <Link href="/register" passHref>Create a new account</Link>
             
           </div>

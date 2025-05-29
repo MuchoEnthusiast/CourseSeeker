@@ -31,11 +31,12 @@ export default function AttachmentUploader({user, id, topicId, onUpload}) {
 
   const handleUpload = async () => {
     
+    //We store attachment files in the db encoded as base64 strings
     const base64file = await fileToBase64(file)
 
     const res = await fetch('/api/courses/' + id + '/topics/' + topicId + '/attachments/0', {
       method: 'POST',
-      body: JSON.stringify({ name, file: base64file })
+      body: JSON.stringify({ name, fileName: file.name, file: base64file })
     })
 
     if (res.ok) {
@@ -50,11 +51,10 @@ export default function AttachmentUploader({user, id, topicId, onUpload}) {
 
   return (
     <>
-      {user.role === 'teacher' && (
-        <button className="btn btn-success" onClick={() => setShow(true)}>
-          Add an attachment
-        </button>
-      )}
+      
+      <button className="btn btn-success" onClick={() => setShow(true)}>
+        Add an attachment
+      </button>
 
       {show && (
         <div

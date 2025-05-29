@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
 
-export default function Attachment({ id, topicId, attachment, user }) {
+export default function Attachment({ id, topicId, attachment, user, userOwner }) {
   const [showConfirm, setShowConfirm] = useState(false)
   const router = useRouter()
 
@@ -21,7 +21,7 @@ export default function Attachment({ id, topicId, attachment, user }) {
         <span className="text-truncate fs-5">{attachment.name}</span>
       </Link>
 
-      {user.role === 'teacher' && (
+      {user.role === 'teacher' && userOwner && (
       <button className="btn btn-link btn-sm text-danger p-0" onClick={() => setShowConfirm(true)} title="Delete">
         <i className="bi bi-trash ms-2" style={{ fontSize: '24px', color: '#f28b8b' }}></i>
       </button>

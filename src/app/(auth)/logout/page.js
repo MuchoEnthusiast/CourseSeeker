@@ -2,6 +2,7 @@
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 
+//This page, when visited, calls the logout api endpoint which clears user's session
 export default function Login() {
   const router = useRouter()
   useEffect(() => {

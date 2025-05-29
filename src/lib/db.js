@@ -8,6 +8,7 @@ export async function getDB() {
     driver: sqlite3.Database
   })
 
+  //Create db tables if not already created
   await db.exec(`
     CREATE TABLE IF NOT EXISTS users (
       username TEXT PRIMARY KEY,
@@ -46,6 +47,7 @@ export async function getDB() {
     CREATE TABLE IF NOT EXISTS attachments (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
+      fileName TEXT NOT NULL,
       file TEXT NOT NULL,
       topicId INTEGER NOT NULL,
       FOREIGN KEY (topicId) REFERENCES topics(id) ON DELETE CASCADE
@@ -72,6 +74,7 @@ export async function getDB() {
       FOREIGN KEY (courseId) REFERENCES courses(id) ON DELETE CASCADE
     );
   `)
+  //NOTE: Course password is not stored as salted hash because it is a low risk shared password, it could be stored as salted hash or just hash if desired
 
   return db
 }

@@ -1,12 +1,14 @@
 import { getDB } from "./db"
 
 
+//Sort object by key
 function sortObj(obj) {
   return Object.keys(obj).sort().reduce((acc, key) => {
       acc[key] = obj[key]
       return acc
     }, {})
 }
+//Convert a list of messages to an object mapping timpestamps to messages
 function listToObj(list) {
   return list.reduce((acc, item) => {
     acc[item.timestamp] = item
@@ -15,6 +17,8 @@ function listToObj(list) {
 }
 
 
+//TODO: For testing only
+//A function to populate the db with test data
 export async function populateDB() {
 
   console.log("POPULATING DB")
@@ -27,16 +31,6 @@ export async function populateDB() {
   `)
   console.log(tables)
 
-  // await db.exec(`
-  //   DELETE FROM attachments;
-  //   DELETE FROM topics;
-  //   DELETE FROM grades;
-  //   DELETE FROM messages;
-  //   DELETE FROM user_course;
-  //   DELETE FROM users;
-  //   DELETE FROM courses;
-  //   DELETE FROM sqlite_sequence;
-  // `)
 
   const now = Math.floor(Date.now() / 1000)
 
@@ -68,12 +62,12 @@ export async function populateDB() {
   `)
 
   await db.run(`
-    INSERT OR IGNORE INTO attachments (id, name, file, topicId)
+    INSERT OR IGNORE INTO attachments (id, name, fileName, file, topicId)
     VALUES
-      (1, 'Algebra Notes', 'algebra-notes.pdf', 1),
-      (3, 'Algebra Notes', 'algebra-notes.pdf', 2),
-      (4, 'Algebra Notes', 'algebra-notes.pdf', 3),
-      (2, 'Motion Diagram', 'data:image/png;base64,ABC123==', 2)
+      (1, 'Algebra Notes', 'file.txt', 'algebra-notes.pdf', 1),
+      (3, 'Algebra Notes', 'file.txt', 'algebra-notes.pdf', 2),
+      (4, 'Algebra Notes', 'file.txt', 'algebra-notes.pdf', 3),
+      (2, 'Motion Diagram', 'file.txt', 'data:image/png;base64,ABC123==', 2)
   `)
 
   await db.run(`
@@ -189,6 +183,15 @@ export async function isUserEnrolled(username, courseId) {
   const result = await db.get(
     'SELECT 1 FROM user_course WHERE username = ? AND courseId = ? LIMIT 1',
     [username, courseId]
+  )
+  return !!result
+}
+
+export async function isUserOwner(username, courseId) {
+  const db = await getDB()
+  const result = await db.get(
+    'SELECT 1 FROM courses WHERE id = ? AND teacher = ?',
+    [courseId, username]
   )
   return !!result
 }

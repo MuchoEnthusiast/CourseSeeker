@@ -1,21 +1,21 @@
 import { getUserFromTokenCookie } from "@/lib/auth"
-import { isUserEnrolled } from "@/lib/data"
+import { isUserEnrolled, isUserOwner } from "@/lib/data"
 import { getDB } from "@/lib/db"
 
 export async function POST(req, { params }) {
   const user = await getUserFromTokenCookie()
-  if(!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
-  if(user.role !== "teacher") return NextResponse.json({ error: 'You must have role teacher' }, { status: 401 })
-
-  const db = await getDB()
   const courseId = parseInt((await params).id)
+  if(!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
+  if(user.role !== "teacher" || !await isUserOwner(user.username, courseId)) return NextResponse.json({ error: 'You must have role teacher and be owner' }, { status: 401 })
+  
+  const db = await getDB()
   const topicId = parseInt((await params).topicId)
-  const { name, file } = await req.json()
+  const { name, fileName, file } = await req.json()
 
   if(!await isUserEnrolled(user.username, courseId)) return NextResponse.json({ error: 'Not enrolled' }, { status: 401 })
   
   
-  if (!name || !file) {
+  if (!name || !fileName || !file) {
     return new Response('Missing name or file', { status: 400 })
   }
 
@@ -24,8 +24,8 @@ export async function POST(req, { params }) {
     if (!topic) return new Response('Topic not found in course', { status: 404 })
 
     const result = await db.run(
-      'INSERT INTO attachments (name, file, topicId) VALUES (?, ?, ?)',
-      [name, file, topicId]
+      'INSERT INTO attachments (name, fileName, file, topicId) VALUES (?, ?, ?, ?)',
+      [name, fileName, file, topicId]
     )
 
     return Response.json({ id: result.lastID }, { status: 201 })
@@ -37,11 +37,11 @@ export async function POST(req, { params }) {
 
 export async function DELETE(_, { params }) {
   const user = await getUserFromTokenCookie()
-  if(!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
-  if(user.role !== "teacher") return NextResponse.json({ error: 'You must have role teacher' }, { status: 401 })
-
-  const db = await getDB()
   const courseId = parseInt((await params).id)
+  if(!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
+  if(user.role !== "teacher" || !await isUserOwner(user.username, courseId)) return NextResponse.json({ error: 'You must have role teacher and be owner' }, { status: 401 })
+  
+  const db = await getDB()
   const topicId = parseInt((await params).topicId)
   const attachmentId = parseInt((await params).attachmentId)
 

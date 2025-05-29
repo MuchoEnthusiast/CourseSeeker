@@ -1,5 +1,6 @@
-import { getCourse, isUserEnrolled } from "@/lib/data"
+import { getCourse, isUserEnrolled, isUserOwner } from "@/lib/data"
 import { getUserFromTokenCookie } from "@/lib/auth"
+import { redirect } from 'next/navigation'
 
 function capitalize(str) {
   if (!str) return ''
@@ -9,7 +10,10 @@ function capitalize(str) {
 
 export default async function Participants({ params }) {
   const user = await getUserFromTokenCookie()
-  if(!user) return <>Not logged in</>
+  if(!user) {
+    redirect('/login')
+    return <>Not logged in</>
+  }
 
   const { id } = await params;
   const course = await getCourse(id)
@@ -34,19 +38,7 @@ export default async function Participants({ params }) {
             <tr key={idx}>
               <td>
                 <div className="d-flex align-items-center">
-                  {/* <div
-                    className="rounded-circle d-flex align-items-center justify-content-center"
-                    style={{
-                      width: '40px',
-                      height: '40px',
-                      marginRight: '10px',
-                      color: 'white',
-                      fontSize: '1.2rem',
-                    }}
-                  >
-                    <i className="bi bi-person" />
-                  </div> */}
-                  <span>{user.name + " " + user.surname}</span>
+                  <span>{user.name + " " + user.surname + (course.teacher === user.username ? " (Owner)" : "")}</span>
                 </div>
               </td>
               <td>{capitalize(user.role)}</td>

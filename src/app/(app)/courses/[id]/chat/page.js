@@ -1,8 +1,10 @@
 'use client'
 import { useEffect, useState, useRef } from 'react'
 import { useParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 
+//Generate a random color for each username
 function generateColor(seed)  {
   let hash = 2166136261
   for (let i = 0; i < seed.length; i++) {
@@ -39,9 +41,11 @@ export default function Chat() {
   const params = useParams()
   const { id } = params
 
+  const router = useRouter()
   const [data, setData] = useState({ messages: {}, lastTimestamp: 0 })
   const dataRef = useRef({ messages: {}, lastTimestamp: 0 })
 
+  //Function to get the last messages not yet got, using the api endpoint
   const retrieveMessages = async () => {
     let currentData = dataRef.current
 
@@ -49,6 +53,7 @@ export default function Chat() {
       setTimeout(scrollToBottom, 100)
     }
 
+    //Request messages of timestamp greater than afterTimestamp which we set to be the timestamp of the most recent message we have in the chat
     const res = await fetch('/api/courses/' + id + '/chat?afterTimestamp=' + currentData.lastTimestamp)
     if(!res.ok) {
       console.log("Error retrieving messages")
@@ -76,9 +81,19 @@ export default function Chat() {
     console.log(currentData)
   }
 
+  //Callback runs on page load
   useEffect(() => {
+    //If not logged in redirect to login page
+    (async () => {
+      const res = await fetch('/api/login')
+      if (!res.ok) router.push('/login')
+    })()
+
+    //Retrive all messages on page load
     retrieveMessages()
 
+    //In this example we use polling to get the latest messages (check every 1 second)
+    //To save network resources it would be better to implement something like long polling or websocket
     const interval = setInterval(retrieveMessages, 1000)
     return () => clearInterval(interval)
   }, [])

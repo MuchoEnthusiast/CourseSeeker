@@ -7,6 +7,8 @@ export const metadata = {
   description: 'Education platform',
 }
 
+//This is the root layout of the non authenticated area
+//It wraps pages like login, register and logout
 export default async function RootLayout({ children }) {
 
   return (

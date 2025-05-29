@@ -4,6 +4,7 @@ import { getDB } from '@/lib/db'
 import { Buffer } from 'buffer'
 import { NextResponse } from 'next/server'
 
+
 export async function GET(req, { params }) {
   const user = await getUserFromTokenCookie()
   if(!user) return NextResponse.json({ error: 'Invalid token' }, { status: 401 })
@@ -24,13 +25,13 @@ export async function GET(req, { params }) {
 
   if (!attachment) return new Response('Not found', { status: 404 })
 
-  const mimeType = 'application/octet-stream' //TODO: detect mime type
+  const mimeType = 'application/octet-stream' //TODO: detect mime type from file
   const fileBuffer = Buffer.from(attachment.file, 'base64')
 
   return new Response(fileBuffer, {
     headers: {
       'Content-Type': mimeType,
-      'Content-Disposition': `inline; filename="${attachment.name}"`
+      'Content-Disposition': `inline; filename="${attachment.fileName}"`
     }
   })
 }

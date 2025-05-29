@@ -1,12 +1,15 @@
 import Topic from "@/components/ui/Topic";
-import { notFound } from "next/navigation";
-import { getCourse, isUserEnrolled } from "@/lib/data"
+import { notFound, redirect } from "next/navigation";
+import { getCourse, isUserEnrolled, isUserOwner } from "@/lib/data"
 import { getUserFromTokenCookie } from "@/lib/auth"
 import CreateTopicButton from "@/components/ui/CreateTopicButton";
 
 export default async function Course({ params }) {
   const user = await getUserFromTokenCookie()
-  if(!user) return <>Not logged in</>
+  if(!user) {
+    redirect('/login')
+    return <>Not logged in</>
+  }
 
   const { id } = await params
   const course = await getCourse(id)
@@ -15,13 +18,14 @@ export default async function Course({ params }) {
   }
 
   if(!await isUserEnrolled(user.username, id)) return <>Not enrolled</>
+  const userOwner = await isUserOwner(user.username, id)
   
   return (
     <div>
-      {user.role === 'teacher' && (<CreateTopicButton id={id} />)}
+      {user.role === 'teacher' && userOwner && (<CreateTopicButton id={id} />)}
       {
         course.topics.length > 0 ? course.topics.map((topic, index) => (
-          <Topic key = {index} id = {id} topic = {topic} user = {user} />
+          <Topic key = {index} id = {id} topic = {topic} user = {user} userOwner={userOwner} />
         )) : (
           <h5 className="text-center">No topics yet</h5>
         )
