@@ -113,3 +113,27 @@ header {
   margin-top: 30px;
   justify-content: center;
 }
+
+.custom-dropdown .dropdown-menu {
+  margin-top: 20px;
+  padding: 0;
+  background-color: #9f6fca;
+  font-size: 1.05rem;
+}
+
+.custom-dropdown #dropdown-basic {
+  background-color: #9f6fca;
+  color: white;
+}
+
+.custom-dropdown .dropdown-item {
+  display: flex;
+  color: white;
+  height: 50px;
+  align-items: center;
+}
+
+.custom-dropdown .dropdown-item:hover {
+  background-color: #e6ddfa;
+  color: #4b2c91 !important;
+}

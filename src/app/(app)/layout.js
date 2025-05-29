@@ -64,11 +64,11 @@ export default async function RootLayout({ children }) {
                 <Link href="/admin" className="ms-3">Admin</Link>
                  )}
                 {user.role === "teacher" && (<CreateCourseButton />)}
-                <Dropdown className="ms-auto">
-                  <DropdownToggle variant="secondary" id="dropdown-basic">
+                <Dropdown className="ms-auto custom-dropdown">
+                  <DropdownToggle variant="" id="dropdown-basic">
                     {user.username}
                   </DropdownToggle>
-                  <DropdownMenu variant="dark">
+                  <DropdownMenu  aria-labelledby="dropdownMenuButton">
                     <DropdownItem href="/">Profile</DropdownItem>
                     <DropdownItem href="/logout">Log out</DropdownItem>
                   </DropdownMenu>
