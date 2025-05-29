@@ -6,6 +6,7 @@ import UserInfoFields from "./UserProfileInfoFields";
 import UserCoursesCard from "./UserCoursesCard";
 
 export default function UserProfilePage({ user }) {
+  const [editHover, setEditHover] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -95,10 +96,17 @@ export default function UserProfilePage({ user }) {
           <div className="card border border-secondary shadow-sm">
             <div className="card-header bg-light d-flex justify-content-between align-items-center">
               <h5 className="mb-0">User Details</h5>
-              <button 
-                className={`btn btn-sm ${editMode ? 'btn-outline-secondary' : 'btn-outline-primary'}`}
+              <button
+                className="btn btn-sm"
                 onClick={toggleEdit}
-                disabled={loading}
+                onMouseEnter={() => setEditHover(true)}
+                onMouseLeave={() => setEditHover(false)}
+                style={{
+                  backgroundColor: editHover ? "#7b3fe8" : "#9357f5",
+                  color: "#fff",
+                  borderColor: "#470ba9",
+                  transition: "background-color 0.2s ease",
+                }}
               >
                 {editMode ? "Cancel" : "Edit Profile"}
               </button>

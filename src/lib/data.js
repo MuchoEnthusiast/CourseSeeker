@@ -218,17 +218,21 @@ export async function getUserDetailsAndCourses(username) {
 
   if (!user) return null;
 
-  const enrolledCourses = await db.all(
-    `SELECT c.id, c.name FROM user_course uc
-     JOIN courses c ON uc.courseId = c.id
-     WHERE uc.username = ?`,
-    [username]
-  );
+ const enrolledCourses = await db.all(
+  `SELECT c.id, c.name, c.teacher FROM user_course uc
+   JOIN courses c ON uc.courseId = c.id
+   WHERE uc.username = ?`,
+  [username]
+);
 
-  const taughtCourses = await db.all(
-    `SELECT id, name FROM courses WHERE teacher = ?`,
-    [username]
-  );
+const taughtCourses = await db.all(
+  `SELECT c.id, c.name, u.name || ' ' || u.surname AS teacher
+   FROM courses c
+   JOIN users u ON u.username = c.teacher
+   WHERE c.teacher = ?`,
+  [username]
+);
+
 
   // Combine courses based on user role
   const courses = user.role === 'teacher' ? taughtCourses : enrolledCourses;
