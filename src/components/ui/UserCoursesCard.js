@@ -3,6 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 export default function UserCoursesCard({ user }) {
+  const [hover, setHover] = useState(false);
   const isTeacher = user.role === "teacher";
   const courses = user.courses || [];
   const title = isTeacher ? "Courses Taught" : "Courses Enrolled";
@@ -52,7 +53,6 @@ export default function UserCoursesCard({ user }) {
       {courses.length > 0 ? (
         <ul className="list-group list-group-flush">
           {courses.map((course, idx) => {
-            const [hover, setHover] = useState(false);
 
             return (
               <li

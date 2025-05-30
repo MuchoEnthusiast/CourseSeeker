@@ -7,6 +7,7 @@ import EnrollDialog from "@/components/ui/EnrollDialog";
 import UnenrollButton from "@/components/ui/UnenrollButton";
 import DeleteCourseButton from "@/components/ui/DeleteCourseButton";
 import ShareButton from "@/components/ui/ShareButton";
+import { getDB } from "@/lib/db";
 
 export default async function Layout({ children, params }) {
   const user = await getUserFromTokenCookie()
@@ -24,6 +25,12 @@ export default async function Layout({ children, params }) {
   updateLastVisited(user.username, id)
   const userEnrolled = await isUserEnrolled(user.username, id)
   const userOwner = await isUserOwner(user.username, id)
+
+  const db = await getDB()
+  const coursePassword = await db.get(
+    'SELECT password FROM courses WHERE id = ?',
+    [course.id]
+  )
 
   return (
     <div>
@@ -59,7 +66,7 @@ export default async function Layout({ children, params }) {
       </>
       ) : (
         <>
-          <EnrollDialog id = {id} user = {user} askPassword = {course.password !== undefined && course.password !== ''} />
+          <EnrollDialog id = {id} user = {user} askPassword = {coursePassword.password !== undefined && coursePassword.password !== ''} />
         </>
       )}
     </div>

@@ -25,7 +25,7 @@ export async function GET(req, { params }) {
 
   if (!attachment) return new Response('Not found', { status: 404 })
 
-  const mimeType = 'application/octet-stream' //TODO: detect mime type from file
+  const mimeType = 'application/octet-stream' //TODO: handle mime type
   const fileBuffer = Buffer.from(attachment.file, 'base64')
 
   return new Response(fileBuffer, {

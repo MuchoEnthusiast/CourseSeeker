@@ -25,7 +25,7 @@ export default async function Courses({ searchParams }) {
   //Filter by search in url search param '?q='
   const q = (await searchParams).q
   if(q) {
-    const aq = (c) => {return allCourses.filter(course => course.name.toLowerCase().includes(q.toLowerCase()) || course.teacher.toLowerCase().includes(q.toLowerCase()))}
+    const aq = (c) => {return c.filter(course => course.name.toLowerCase().includes(q.toLowerCase()) || course.teacher.toLowerCase().includes(q.toLowerCase()))}
     enrolledCourses = aq(enrolledCourses)
     allCourses = aq(allCourses)
   }

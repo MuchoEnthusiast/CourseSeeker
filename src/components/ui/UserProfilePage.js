@@ -74,7 +74,6 @@ export default function UserProfilePage({ user }) {
       });
 
       if (res.ok) {
-        alert("Profile saved successfully!");
         window.location.reload();
       } else {
         const errorData = await res.json();

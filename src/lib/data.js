@@ -17,76 +17,6 @@ function listToObj(list) {
 }
 
 
-//TODO: For testing only
-//A function to populate the db with test data
-export async function populateDB() {
-
-  console.log("POPULATING DB")
-  const db = await getDB()
-  const tables = await db.all(`
-    SELECT name
-    FROM sqlite_master
-    WHERE type = 'table'
-    ORDER BY name;
-  `)
-  console.log(tables)
-
-
-  const now = Math.floor(Date.now() / 1000)
-
-  //in those test values the password is the username
-  await db.run(`
-    INSERT OR IGNORE INTO users (username, role, name, surname, passwordHash, salt)
-    VALUES
-      ('alice', 'student', 'Alice', 'Liddell', 'f3104e622245caf523d083fe2e65d79d7078a29c422062a14bf555735ee8168813073e9b9103d67b370662ac0ff836be3ec0d57e0642510e8e3fa2368bbe8e6d', '765e78308f78693541df54ef0785a084'),
-      ('bob', 'teacher', 'Bob', 'Builder', '6072c6eb7c584cfe4c3761769eb136a912f542bfdd0a53f49949a1bf4bed5ed19e09f69aed62a2d1a797e4647b6aaf11e1673b350982df68cddd277691d10a20', 'e3ebe7cf7ad1a876f525d9234e3429ff')
-  `)
-
-  await db.run(`
-    INSERT OR IGNORE INTO courses (id, name, password, teacher)
-    VALUES (1, 'Math', '', 'bob'), (2, 'Physics', 'password', 'bob')
-  `)
-
-  await db.run(`
-    INSERT OR IGNORE INTO user_course (username, courseId, lastVisited)
-    VALUES ('alice', 1, ${now}), ('bob', 1, ${now + 100000}), ('bob', 2, ${now + 1000000})
-  `)
-
-  await db.run(`
-    INSERT OR IGNORE INTO topics (title, description, courseId)
-    VALUES
-      ('Algebra', 'Basic Algebra concepts', 1),
-      ('Algebra2', 'Basic Algebra concepts', 1),
-      ('Algebra3', 'Basic Algebra concepts', 1),
-      ('Kinematics', 'Intro to motion', 2)
-  `)
-
-  await db.run(`
-    INSERT OR IGNORE INTO attachments (id, name, fileName, file, topicId)
-    VALUES
-      (1, 'Algebra Notes', 'file.txt', 'algebra-notes.pdf', 1),
-      (3, 'Algebra Notes', 'file.txt', 'algebra-notes.pdf', 2),
-      (4, 'Algebra Notes', 'file.txt', 'algebra-notes.pdf', 3),
-      (2, 'Motion Diagram', 'file.txt', 'data:image/png;base64,ABC123==', 2)
-  `)
-
-  await db.run(`
-    INSERT OR IGNORE INTO grades (id, name, gradeNumber, timestamp, username, courseId)
-    VALUES
-      (1, 'Midterm', 85, ${now}, 'alice', 1),
-      (2, 'Final', 90, ${now + 3600}, 'alice', 1),
-      (5, 'Midterm', 76, ${now + 3600}, 'bob', 1),
-      (6, 'Final', 55, ${now + 3600}, 'bob', 1)
-  `)
-
-  await db.run(`
-    INSERT OR IGNORE INTO messages (id, username, courseId, timestamp, text)
-    VALUES
-      (1, 'alice', 1, ${now}, 'When is the next exam?'),
-      (2, 'bob', 1, ${now + 120}, 'Next week.')
-  `)
-}
-
 export async function execQuery(query, parameters) {
   try {
     const res = await (await getDB()).run(query, parameters)
@@ -120,7 +50,7 @@ export async function getElement(query, parameters) {
 
 
 export async function getCourse(courseId) {
-  const course = await getElement('SELECT * FROM courses WHERE id = ?', [courseId])
+  const course = await getElement('SELECT id, name, teacher FROM courses WHERE id = ?', [courseId])
   if (!course) return null
 
 
@@ -205,11 +135,14 @@ export async function updateLastVisited(username, courseId) {
   )
 }
 
+
+
+
 export async function getUserDetailsAndCourses(username) {
   const db = await getDB();
 
   const user = await db.get(
-    `SELECT u.username, u.role, u.name, u.surname, p.nationality, p.city, p.country, p.description, p.photo
+    `SELECT u.username, u.role, u.name, u.surname, p.nationality, p.city, p.country, p.description
      FROM users u
      LEFT JOIN profile p ON u.username = p.username
      WHERE u.username = ?`,
@@ -244,4 +177,3 @@ const taughtCourses = await db.all(
     taughtCourses,
   };
 }
-

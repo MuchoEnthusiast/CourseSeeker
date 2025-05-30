@@ -1,5 +1,6 @@
 import { getUserFromTokenCookie } from "@/lib/auth"
 import { getDB } from "@/lib/db"
+import { NextResponse } from "next/server"
 
 export async function GET(req, { params }) {
   const user = await getUserFromTokenCookie()

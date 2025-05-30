@@ -43,7 +43,7 @@ export default async function RootLayout({ children }) {
         <div className="wrapper">
           <header>
             <div className="header">
-              <Link href="/" passHref className="logo">
+              <Link href="/courses" passHref className="logo">
                 <Image
                   src="/courseseeker_logo.svg"
                   width={500}
@@ -68,8 +68,8 @@ export default async function RootLayout({ children }) {
                   <DropdownToggle variant="" id="dropdown-basic">
                     {user.username}
                   </DropdownToggle>
-                  <DropdownMenu variant="dark">
-                    <DropdownItem href="/profile">Profile</DropdownItem>
+                  <DropdownMenu  aria-labelledby="dropdownMenuButton">
+                    <DropdownItem href="/">Profile</DropdownItem>
                     <DropdownItem href="/logout">Log out</DropdownItem>
                   </DropdownMenu>
                 </Dropdown>

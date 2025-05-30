@@ -1,6 +1,7 @@
+import UserProfilePage from '@/components/ui/UserProfilePage';
 import { getUserFromTokenCookie } from '@/lib/auth';
+import { getUserDetailsAndCourses } from '@/lib/data';
 import { redirect } from 'next/navigation'
-import Image from 'next/image';
 
 export default async function Home() {
   const user = await getUserFromTokenCookie()
@@ -10,12 +11,6 @@ export default async function Home() {
   }
 
 
-  return (
-    <div>
-      <main>
-        <h1>Ciao, {user.username}!</h1>
-      </main>
-
-    </div>
-  );
+  const fullUser = await getUserDetailsAndCourses(user.username);
+  return <UserProfilePage user={fullUser} />
 }

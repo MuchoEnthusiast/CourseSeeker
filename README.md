@@ -42,3 +42,14 @@ Bootstrap is a component based CSS library providing ready to use styled and res
 
 ## Demo data
 The database has been populated with demo data.
+Here are the "username:password" and "Course:password" pairs:
+bob:bob (Teacher)
+alice:alice (Student)
+andrew:andrew (Teacher)
+carol:carol (Teacher)
+dave:dave (Student)
+eve:eve (Student)
+
+Biology:biology
+History:password
+Mathematics:password2

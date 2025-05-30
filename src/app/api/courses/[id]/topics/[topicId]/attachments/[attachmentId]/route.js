@@ -1,6 +1,7 @@
 import { getUserFromTokenCookie } from "@/lib/auth"
 import { isUserEnrolled, isUserOwner } from "@/lib/data"
 import { getDB } from "@/lib/db"
+import { NextResponse } from "next/server"
 
 export async function POST(req, { params }) {
   const user = await getUserFromTokenCookie()

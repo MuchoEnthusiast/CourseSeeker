@@ -1,15 +1,20 @@
+"use client";
 import { useEffect, useState } from "react";
 
 export default function UserPhoto({ user, editMode, handlePhotoChange, handlePhotoDelete }) {
+  const imgUrlDefault = '/default-avatar.svg';
   const [preview, setPreview] = useState(null);
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
-    if (user.photo) {
-      setPreview(`/uploads/${user.photo}`);
-    }
-  }, [user.photo]);
+    (async () => {
+      setIsClient(true);
+
+      const imgUrl = '/profile/' + user.username + '/image';
+      const res = await fetch(imgUrl)
+      setPreview(res.ok ? imgUrl : '')
+    })()
+  }, [editMode]);
 
   const handleChange = (e) => {
     const file = e.target.files[0];
@@ -20,7 +25,7 @@ export default function UserPhoto({ user, editMode, handlePhotoChange, handlePho
   };
 
   const handleDelete = () => {
-    if (isClient && window.confirm('Are you sure you want to delete your profile photo?')) {
+    if (isClient) {
       setPreview(null);
       handlePhotoDelete();
     }
@@ -29,7 +34,7 @@ export default function UserPhoto({ user, editMode, handlePhotoChange, handlePho
   return (
     <div className="text-center mb-3">
       <img
-        src={preview || "/default-avatar.png"}
+        src={preview || imgUrlDefault}
         alt="User"
         className="rounded-circle border"
         width={120}
@@ -44,7 +49,7 @@ export default function UserPhoto({ user, editMode, handlePhotoChange, handlePho
             className="form-control form-control-sm mb-2"
             onChange={handleChange}
           />
-          {(preview && preview !== "/default-avatar.png") && (
+          {(preview && imgUrlDefault) && (
             <button
               type="button"
               className="btn btn-outline-danger btn-sm"
